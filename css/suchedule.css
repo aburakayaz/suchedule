@@ -101,11 +101,6 @@ header {
     margin-bottom: 10px;
 }
 
-/*
-.course-entry:not(.hide-info) {
-    min-height: fit-content;
-}*/
-
 .course-name {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -333,7 +328,7 @@ header {
 }
 
 .cell-course.animate .remove-course::after {
-    animation: shake 100ms linear 0s infinite alternate;
+    animation: shake 100ms linear infinite alternate;
 }
 
 .section-button {
@@ -460,7 +455,7 @@ header {
 }
 
 .notification .close-button:hover {
-    animation: shake 100ms linear 0s infinite alternate;
+    animation: shake 100ms linear infinite alternate;
 }
 
 .notification-content {
