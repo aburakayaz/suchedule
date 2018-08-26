@@ -95,15 +95,16 @@ header {
     display: flex;
     flex-direction: column;
     max-width: 363px;
-    min-height: 40px;
+    min-height: fit-content;
     padding: 10px;
     background-color: #F0EDEE;
     margin-bottom: 10px;
 }
 
+/*
 .course-entry:not(.hide-info) {
     min-height: fit-content;
-}
+}*/
 
 .course-name {
     overflow: hidden;
