@@ -132,6 +132,15 @@ header {
     content: '\e804';
 }
 
+@keyframes shake {
+    from {transform: rotate(-15deg);}
+    to {transform: rotate(15deg);}
+}
+
+.display-alone .course-expand:hover::after {
+    animation: shake 100ms linear infinite alternate;
+}
+
 .course-entry.hide-info .course-info {
     display: none;
 }
@@ -320,11 +329,6 @@ header {
     left: 1px;
     top: 0;
     cursor: pointer;
-}
-
-@keyframes shake {
-    from {transform: rotate(-15deg);}
-    to {transform: rotate(15deg);}
 }
 
 .cell-course.animate .remove-course::after {
