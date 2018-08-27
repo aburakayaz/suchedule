@@ -1,6 +1,7 @@
 const config = {
     term: '201801',
-    infoLink: 'http://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=201801&crn_in='
+    infoLink: 'http://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=201801&crn_in=',
+    dataVersion: 2
 };
 
 const templateGenerator = (() => {
@@ -558,7 +559,36 @@ const classCells = (() => {
 })();
 
 (() => {
-    const data = localStorage.getItem(`course-data-${config.term}`);
+    if (localStorage.getItem('visited_before') !== null) {
+        localStorage.removeItem('visited_before');
+
+        localStorage.setItem('visited-before', 'yes');
+    }
+})();
+
+(() => {
+    const storageKey = `course-data-${config.term}-${config.dataVersion}`;
+    const data = localStorage.getItem(storageKey);
+
+    const showNotification = () => {
+        $('#notify-data-updated').fadeIn(500);
+    };
+
+    const clearOldData = () => {
+        for (let i = 0; ; i++) {
+            const key = localStorage.key(i);
+
+            if (key === null) {
+                break;
+            }
+
+            if (key.indexOf('course-data') > -1 || key.indexOf('saved-schedule') > -1) {
+                localStorage.removeItem(key);
+            }
+        }
+
+        showNotification();
+    };
 
     if (data !== null) {
         const { courses, instructors } = JSON.parse(data);
@@ -568,21 +598,25 @@ const classCells = (() => {
         return;
     }
 
-    $.getJSON('data.min.json', data => {
+    $.getJSON(`data-v${config.dataVersion}.min.json`, data => {
         const { courses, instructors } = data;
+
+        if (localStorage.getItem('visited-before') !== null) {
+            clearOldData();
+        }
 
         courseEntry.populate(courses, instructors);
 
-        localStorage.setItem(`course-data-${config.term}`, JSON.stringify(data));
+        localStorage.setItem(storageKey, JSON.stringify(data));
     });
 })();
 
 (() => {
-    if (localStorage.getItem('visited_before') === null) {
+    if (localStorage.getItem('visited-before') === null) {
         $('#notify-about').show();
         $('#notify-cookies').show();
 
-        localStorage.setItem('visited_before', 'yes');
+        localStorage.setItem('visited-before', 'yes');
     }
 })();
 
