@@ -577,6 +577,8 @@ const classCells = (() => {
     };
 
     const clearOldData = () => {
+        let removedData = false;
+
         for (let i = 0; ; i++) {
             const key = localStorage.key(i);
 
@@ -586,10 +588,14 @@ const classCells = (() => {
 
             if (key.indexOf('course-data') > -1 || key.indexOf('saved-schedule') > -1) {
                 localStorage.removeItem(key);
+
+                removedData = true;
             }
         }
 
-        showNotification();
+        if (removedData) {
+            showNotification();
+        }
     };
 
     if (data !== null) {
@@ -603,9 +609,7 @@ const classCells = (() => {
     $.getJSON(`data-v${config.dataVersion}.min.json`, data => {
         const { courses, instructors } = data;
 
-        if (localStorage.getItem('visited-before') !== null) {
-            clearOldData();
-        }
+        clearOldData();
 
         courseEntry.populate(courses, instructors);
 
