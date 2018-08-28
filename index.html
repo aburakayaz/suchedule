@@ -1,134 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SUCHEDULE</title>
-    <link rel="stylesheet" href="font/fontello.min.css">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SUchedule</title>
     <link rel="stylesheet" href="font/animation.min.css">
+    <link rel="stylesheet" href="font/fontello.min.css">
     <link rel="stylesheet" href="css/suchedule.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 </head>
 <body>
-<div id="container">
-    <header>
-        <div id="logo">SUCHEDULE</div>
-        <div id="about-button" class="button">?</div>
-        <div id="clear-schedule-button" class="button">Clear All</div>
-        <div id="copy-crn-button" class="button">Copy CRN</div>
-    </header>
-    <div id="left-menu">
-        <input title="search" type="text" id="search-box" placeholder="Enter Course Code or Name">
-        <div id="course-list-shadow"></div>
-        <div id="course-list" class="loading"></div>
+<header>
+    <div id="logo">SUchedule</div>
+    <div id="about-button" class="icon-help button"></div>
+    <div id="clear-button" class="icon-trash button">Clear</div>
+    <div id="copy-button" class="icon-clipboard button">Copy Crn</div>
+</header>
+<div id="menu">
+    <div id="menu-toggle" class="icon-menu button"></div>
+    <div id="input-container">
+        <input id="search-box" title="search" type="text" placeholder="Enter Course Code or Name">
     </div>
-    <div id="schedule-wrapper">
-        <table id="schedule">
-            <tr>
-                <th>-</th>
-                <th class="day-cell">Monday</th>
-                <th class="day-cell">Tuesday</th>
-                <th class="day-cell">Wednesday</th>
-                <th class="day-cell">Thursday</th>
-                <th class="day-cell">Friday</th>
-            </tr>
-            <tr>
-                <td class="hour-cell">08:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">09:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">10:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">11:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">12:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">13:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">14:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">15:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">16:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">17:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-            <tr>
-                <td class="hour-cell">18:40</td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-                <td class="class-cell"></td>
-            </tr>
-        </table>
-    </div>
+    <div id="course-list-shadow"></div>
+    <div id="course-list" class="loading"></div>
+</div>
+<div id="main-content">
+    <table id="schedule">
+        <tr>
+            <th>-</th>
+            <th class="day-cell">Monday</th>
+            <th class="day-cell">Tuesday</th>
+            <th class="day-cell">Wednesday</th>
+            <th class="day-cell">Thursday</th>
+            <th class="day-cell">Friday</th>
+        </tr>
+        <tr>
+            <td class="hour-cell">08:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">09:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">10:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">11:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">12:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">13:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">14:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">15:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">16:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">17:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+        <tr>
+            <td class="hour-cell">18:40</td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+            <td class="class-cell"></td>
+        </tr>
+    </table>
 </div>
 <div id="notifications">
     <div id="notify-about" class="notification" style="display: none;">
         <div class="notification-header">
             <div class="notification-header-text">About (?)</div>
-            <div class="close-button icon-cancel"></div>
+            <div class="icon-cancel shake-on-hover button"></div>
         </div>
         <div class="notification-content">
             <p>I am Burak, a CS student at Sabancı University. I've built this project with the hopes of making
@@ -150,10 +154,11 @@
     <div id="notify-cookies" class="notification" style="display: none;">
         <div class="notification-header">
             <div class="notification-header-text">Cookies!</div>
-            <div class="close-button icon-cancel"></div>
+            <div class="icon-cancel shake-on-hover button"></div>
         </div>
         <div class="notification-content">
-            <p>This website uses cookies to save the state of your schedule. By using this website, you will be consenting to the usage of
+            <p>This website uses cookies to save the state of your schedule. By using this website, you will be
+                consenting to the usage of
                 cookies.</p>
         </div>
         <div class="notification-button button">I Understand</div>
@@ -161,7 +166,7 @@
     <div id="notify-clear" class="notification" style="display: none;">
         <div class="notification-header">
             <div class="notification-header-text">Are You Sure?</div>
-            <div class="close-button icon-cancel"></div>
+            <div class="icon-cancel shake-on-hover button"></div>
         </div>
         <div class="notification-content">
             <p>Are you sure you want to clear your schedule?</p>
@@ -171,7 +176,7 @@
     <div id="notify-copied" class="notification" style="display: none;">
         <div class="notification-header">
             <div class="notification-header-text">Copied!</div>
-            <div class="close-button icon-cancel"></div>
+            <div class="icon-cancel shake-on-hover button"></div>
         </div>
         <div class="notification-content">
             <p>You can CTRL + V anywhere to see your crns.</p>
@@ -180,7 +185,7 @@
     <div id="notify-copy-fail" class="notification" style="display: none;">
         <div class="notification-header">
             <div class="notification-header-text">Couldn't Copy</div>
-            <div class="close-button icon-cancel"></div>
+            <div class="icon-cancel shake-on-hover button"></div>
         </div>
         <div class="notification-content">
             <p></p>
@@ -190,7 +195,7 @@
     <div id="notify-data-updated" class="notification" style="display: none;">
         <div class="notification-header">
             <div class="notification-header-text">Courses Have Been Updated</div>
-            <div class="close-button icon-cancel"></div>
+            <div class="icon-cancel shake-on-hover button"></div>
         </div>
         <div class="notification-content">
             <p>Sorry for clearing your schedule, but what's the use for an outdated schedule anyways?</p>
@@ -200,12 +205,16 @@
 </div>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/clipboard.min.js"></script>
-<script src="js/suchedule.min.js"></script>
+<script src="js/suchedule.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113204083-2"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
     gtag('js', new Date());
 
     gtag('config', 'UA-113204083-2');

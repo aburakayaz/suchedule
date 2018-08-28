@@ -25,7 +25,7 @@ const templateGenerator = (() => {
         <div class="course-entry hide-info" data-code="${course.code}">
             <div class="course-header">
                 <div class="course-name">${course.code} - ${course.name}</div>
-                <div class="course-expand"></div>
+                <div class="course-expand icon-right-open-big"></div>
             </div>
             <div class="course-info">
             ${course.classes.map(_class => `
@@ -294,16 +294,18 @@ const courseEntry = (() => {
     courseEntry.startDisplayMode = code => {
         courseEntry(code).open().getElement().addClass('display-alone');
 
-        $('#left-menu').addClass('display-mode');
+        $('#menu').addClass('display-mode');
+
+        $('body').removeClass('hide-menu');
     };
 
     courseEntry.endDisplayMode = () => {
         courseEntry($('.display-alone')).close().getElement().removeClass('display-alone');
 
-        $('#left-menu').removeClass('display-mode');
+        $('#menu').removeClass('display-mode');
     };
 
-    courseEntry.isOnDisplayMode = () => $('#left-menu').hasClass('display-mode');
+    courseEntry.isOnDisplayMode = () => $('#menu').hasClass('display-mode');
 
     courseEntry.make = (course, instructors) => courseEntry(templateGenerator.makeCourseEntry(course, instructors));
 
@@ -672,6 +674,8 @@ const classCells = (() => {
         courseEntry.filterByName(($(event.currentTarget).val() || '').toUpperCase());
     });
 
+    $('#menu-toggle').on('click', () => $('body').toggleClass('hide-menu'));
+
     $(document).on('keyup', (() => {
         const ESC_KEY = 27;
 
@@ -686,7 +690,7 @@ const classCells = (() => {
         };
     })());
 
-    $(document).on('click', '#clear-schedule-button', () => $('#notify-clear').fadeIn(500));
+    $(document).on('click', '#clear-button', () => $('#notify-clear').fadeIn(500));
 
     $(document).on('click', '#about-button', () => $('#notify-about').fadeIn(500));
 })();
@@ -704,7 +708,7 @@ const classCells = (() => {
 })();
 
 (() => {
-    $(document).on('click', '.notification .close-button,.notification-button', event => {
+    $(document).on('click', '.notification .button', event => {
         $(event.target).closest('.notification').fadeOut(500);
     });
 
@@ -719,7 +723,7 @@ const classCells = (() => {
 })();
 
 (() => {
-    const clipboard = new ClipboardJS('#copy-crn-button', {
+    const clipboard = new ClipboardJS('#copy-button', {
         text: () => cellCourses.getAllCrnDataToCopy()
     });
 
