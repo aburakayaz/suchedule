@@ -763,6 +763,12 @@ const classCells = (() => {
     $(document).on('click', '#day-filter', () => $('#day-filter-selections').toggle());
 
     $(document).on('input', '#day-filter-selections input', courseEntry.filterByDays);
+
+    if ($('#day-filter-selections input:not(:checked)').length > 0) {
+        courseEntry.filterByDays();
+
+        $('#day-filter-selections').show();
+    }
 })();
 
 (() => {
