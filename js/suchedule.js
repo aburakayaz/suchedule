@@ -195,11 +195,15 @@ const courseEntry = (() => {
     };
 
     courseEntry.prototype.addFilter = function (filterName) {
-        this.getElement().addClass(`filter-${filterName}-hide`);
+        this.getElement().addClass(`filter-hide-${filterName}`);
+
+        return this;
     };
 
     courseEntry.prototype.removeFilter = function (filterName) {
-        this.getElement().removeClass(`filter-${filterName}-hide`);
+        this.getElement().removeClass(`filter-hide-${filterName}`);
+
+        return this;
     };
 
     courseEntry.prototype.nameContains = function (query) {
@@ -277,6 +281,18 @@ const courseEntry = (() => {
         return this;
     };
 
+    courseEntry.prototype.isSelectable = function () {
+        let isSelectable = true;
+
+        this.getElement().find('.course-sections').each((i, courseSections) => {
+            if ($(courseSections).find('.course-section:not([class*=filter-hide-])').length === 0) {
+                isSelectable = false;
+            }
+        });
+
+        return isSelectable;
+    };
+
     courseEntry.closeAll = () => {
         $('.course-entry').addClass('hide-info');
     };
@@ -288,6 +304,25 @@ const courseEntry = (() => {
             course = courseEntry($(course));
 
             course.nameContains(query) ? course.removeFilter('name') : course.addFilter('name');
+        });
+    };
+
+    courseEntry.filterByDays = () => {
+        let days = [];
+
+        $('#day-filter-selections input').each((i, checkbox) => {
+            if ($(checkbox).is(':checked')) {
+                days.push(i);
+            }
+        });
+
+        $('.course-entry').each((i, course) => {
+
+            course = courseEntry($(course));
+
+            course.getSections().forEach(_section => _section.filterByDays(days));
+
+            course.isSelectable() ? course.removeFilter('day') : course.addFilter('day');
         });
     };
 
@@ -361,6 +396,18 @@ const section = (() => {
         return this;
     };
 
+    section.prototype.addFilter = function (filterName) {
+        this.getElement().addClass(`filter-hide-${filterName}`);
+
+        return this;
+    };
+
+    section.prototype.removeFilter = function (filterName) {
+        this.getElement().removeClass(`filter-hide-${filterName}`);
+
+        return this;
+    };
+
     section.prototype.getCourseEntry = function () {
         return courseEntry(this.getElement().parents('.course-entry'));
     };
@@ -371,6 +418,20 @@ const section = (() => {
             start: $(el).data('start'),
             duration: $(el).data('duration')
         })).toArray();
+    };
+
+    section.prototype.filterByDays = function (days) {
+        let availableInDays = true;
+
+        this.getElement().find('.section-day').each((i, sectionDay) => {
+            if (days.indexOf(Number($(sectionDay).data('day'))) === -1) {
+                availableInDays = false;
+            }
+        });
+
+        availableInDays ? this.removeFilter('day') : this.addFilter('day');
+
+        return this;
     };
 
     section.prototype.getClassCells = function () {
@@ -451,7 +512,6 @@ const cellCourses = (() => {
     cellCourses.prototype.isOfMainCourse = function () {
         return /^[A-Z]+\d+ .*$/.test(this.getSectionName());
     };
-
     cellCourses.prototype.animateCloseButtons = function (propagate = true) {
         if (propagate && this.isOfMainCourse()) {
             cellCourses.findByCourseCode(this.getCourseCodeWithoutSpace()).animateCloseButtons(false);
@@ -697,6 +757,12 @@ const classCells = (() => {
     $(document).on('click', '#clear-button', () => $('#notify-clear').fadeIn(500));
 
     $(document).on('click', '#about-button', () => $('#notify-about').fadeIn(500));
+})();
+
+(() => {
+    $(document).on('click', '#day-filter', () => $('#day-filter-selections').toggle());
+
+    $(document).on('input', '#day-filter-selections input', courseEntry.filterByDays);
 })();
 
 (() => {

@@ -104,6 +104,28 @@ header .button {
     padding: 10px;
 }
 
+#filter-container {
+    color: white;
+}
+
+#filter-menu {
+    display: flex;
+    padding: 10px;
+}
+
+.filter-selections {
+    padding: 10px;
+}
+
+#day-filter-selections {
+    display: flex;
+    justify-content: space-between;
+}
+
+#day-filter-selections div * {
+    cursor: pointer;
+}
+
 #course-list-shadow {
     width: 92%;
     height: 0;
@@ -331,7 +353,7 @@ header .button {
     position: absolute;
 }
 
-.filter-name-hide {
+[class*=filter-hide-] {
     display: none;
 }
 
