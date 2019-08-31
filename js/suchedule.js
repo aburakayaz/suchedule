@@ -1,7 +1,7 @@
 const config = {
     term: '201901',
     infoLink: 'http://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=201901&crn_in=',
-    dataVersion: 8
+    dataVersion: 9
 };
 
 const templateGenerator = (() => {
