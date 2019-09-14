@@ -299,11 +299,15 @@ const courseEntry = (() => {
 
     courseEntry.findByCode = code => courseEntry($(`.course-entry[data-code="${code}"]`));
 
-    courseEntry.filterByName = query => {
+    courseEntry.filter = (sectionFilter, courseFilter) => {
         $('.course-entry').each((i, course) => {
             course = courseEntry($(course));
 
-            course.nameContains(query) ? course.removeFilter('name') : course.addFilter('name');
+            course.getSections().forEach(section => {
+                sectionFilter(section) ? section.removeFilter('search') : section.addFilter('search');
+            });
+
+            courseFilter(course) ? course.removeFilter('search') : course.addFilter('search');
         });
     };
 
@@ -315,6 +319,9 @@ const courseEntry = (() => {
                 days.push(i);
             }
         });
+
+        //  TODO: Fix. This is a hack to always include courses with TBA days
+        days.push(5);
 
         $('.course-entry').each((i, course) => {
 
@@ -380,6 +387,14 @@ const section = (() => {
 
     section.prototype.getName = function () {
         return this.getElement().data('section-name');
+    };
+
+    section.prototype.getInstructorName = function () {
+        return this.getElement().find('.instructor').text();
+    };
+
+    section.prototype.instructorNameContains = function (query) {
+        return this.getInstructorName().toUpperCase().indexOf(query) > -1;
     };
 
     section.prototype.getGeneralName = function () {
@@ -732,11 +747,30 @@ const classCells = (() => {
         classCells.clearInterests();
     });
 
-    $('#search-box').on('input', event => {
+    const searchParameterChange = event => {
         courseEntry.closeAll();
 
-        courseEntry.filterByName(($(event.currentTarget).val() || '').toUpperCase());
-    });
+        const searchQuery = ($('#search-box').val() || '').toUpperCase();
+
+        switch($('#search-filter').val()) {
+            case 'name':
+                courseEntry.filter(
+                    () => true,
+                    course => course.nameContains(searchQuery)
+                );
+                break;
+            case 'instructor':
+                courseEntry.filter(
+                    section => section.instructorNameContains(searchQuery),
+                    course => course.isSelectable()
+                );
+                break;
+        }
+    };
+
+    $('#search-filter').on('change', searchParameterChange);
+
+    $('#search-box').on('input', searchParameterChange);
 
     $('#menu-toggle').on('click', () => $('body').toggleClass('hide-menu'));
 

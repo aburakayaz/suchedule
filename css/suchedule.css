@@ -92,16 +92,34 @@ header .button {
 }
 
 #input-container {
-    padding: 10px 10px 10px 10px;
+    display: flex;
+    padding: 10px;
 }
 
 #search-box {
+    flex: 1;
+    padding: 10px;
     font-size: 15px;
     font-family: inherit;
     color: #011627;
-    width: 100%;
     border: none;
-    padding: 10px;
+}
+#search-box::placeholder {
+    direction: rtl;
+}
+
+#search-filter {
+    padding-left: 0.4rem;
+    font-size: 15px;
+    font-family: inherit;
+    color: white;
+    background-color: #4183c4;
+    border: none;
+}
+
+#search-filter option {
+    background-color: white;
+    color: black;
 }
 
 #filter-container {
