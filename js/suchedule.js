@@ -6,7 +6,7 @@ const config = {
 
 const templateGenerator = (() => {
     const getDayFromCode = (() => {
-        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', '-'];
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'TBA'];
 
         return dayCode => {
             return days[dayCode];
@@ -14,6 +14,8 @@ const templateGenerator = (() => {
     })();
 
     const getScheduleHours = (start, duration) => {
+        if (start === -1) return 'TBA';
+
         start += 8;
 
         const end = start + duration;
