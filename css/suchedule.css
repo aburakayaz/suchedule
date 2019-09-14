@@ -57,6 +57,11 @@ header .button {
     width: 400px;
     height: 100%;
     position: relative;
+    padding: 10px 10px 0 10px;
+}
+
+#menu > div:not(:last-child) {
+    margin-bottom: 10px;
 }
 
 #menu ::-webkit-scrollbar {
@@ -78,6 +83,11 @@ header .button {
 }
 
 #menu-toggle {
+    position: absolute;
+    right: -40px;
+    top: 0;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -85,18 +95,14 @@ header .button {
     background-color: black;
     color: white;
     opacity: 0.7;
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    right: -40px;
 }
 
 #input-container {
     display: flex;
-    padding: 10px;
 }
 
 #search-box {
+    min-width: 0;
     flex: 1;
     padding: 10px;
     font-size: 15px;
@@ -115,6 +121,7 @@ header .button {
     color: white;
     background-color: #4183c4;
     border: none;
+    cursor: pointer;
 }
 
 #search-filter option {
@@ -128,28 +135,45 @@ header .button {
 
 #filter-menu {
     display: flex;
-    padding: 10px;
+    align-items: center;
 }
 
 .filter-selections {
-    padding: 10px;
+    display: flex;
+    flex: 1;
 }
 
 #day-filter-selections {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
-#day-filter-selections div * {
+#day-filter {
+    user-select: none;
+}
+
+input[id*=day-filter-] {
+    display: none;
+}
+
+input[id*=day-filter-] + label {
+    padding: 0.4rem;
+    margin-left: 0.6rem;
+    background-color: firebrick;
     cursor: pointer;
+    user-select: none;
+    font-family: monospace;
+    text-transform: uppercase;
+}
+
+input[id*=day-filter-]:checked + label {
+    background-color: forestgreen;
 }
 
 #course-list-shadow {
     width: 92%;
     height: 0;
-    -moz-box-shadow: 0 3px 5px 7px #031926;
-    -webkit-box-shadow: 0 3px 5px 7px #031926;
-    box-shadow: 0 3px 5px 7px #031926;
+    box-shadow: 0 8px 5px 7px #031926;
     z-index: 1;
     transition: width .2s ease;
 }
@@ -160,7 +184,7 @@ header .button {
     min-height: 500px;
     position: relative;
     overflow-y: scroll;
-    padding: 10px 0 10px 10px;
+    padding-top: 6px;
 }
 
 #course-list.loading::before {
