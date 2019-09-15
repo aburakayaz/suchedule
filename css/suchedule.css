@@ -152,22 +152,42 @@ header .button {
     user-select: none;
 }
 
+#day-filter::after {
+    content: "Filter By Day";
+}
+
+@media only screen and (max-width: 440px) {
+    #day-filter::after {
+        content: "Day";
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    #day-filter::after {
+        content: "";
+    }
+}
+
 input[id*=day-filter-] {
     display: none;
 }
 
+input[id*=day-filter-] + label:not(:first-of-type) {
+    margin-left: 0.6rem;
+}
+
 input[id*=day-filter-] + label {
     padding: 0.4rem;
-    margin-left: 0.6rem;
-    background-color: firebrick;
     cursor: pointer;
     user-select: none;
     font-family: monospace;
     text-transform: uppercase;
+    box-shadow: inset 0 -3px #4183c4;
+    transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 input[id*=day-filter-]:checked + label {
-    background-color: forestgreen;
+    box-shadow: inset 0 -30px #4183c4;
 }
 
 #course-list-shadow {
