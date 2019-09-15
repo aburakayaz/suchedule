@@ -299,11 +299,15 @@ const courseEntry = (() => {
 
     courseEntry.findByCode = code => courseEntry($(`.course-entry[data-code="${code}"]`));
 
-    courseEntry.filter = (filter, tag) => {
+    courseEntry.clearFilter = filterName => {
+        $('.course-entry').removeClass(`filter-hide-${filterName}`);
+    };
+
+    courseEntry.filter = (filter, filterName) => {
         $('.course-entry').each((i, course) => {
             course = courseEntry($(course));
 
-            filter(course) ? course.removeFilter(tag) : course.addFilter(tag);
+            filter(course) ? course.removeFilter(filterName) : course.addFilter(filterName);
         });
     };
 
@@ -453,12 +457,20 @@ const sectionEntry = (() => {
 
     sectionEntry.findByCrn = crn => sectionEntry($(`.course-section[data-crn="${crn}"]:first`));
 
-    sectionEntry.filter = (filter, tag) => {
+    sectionEntry.clearFilter = (filterName, checkForEmptySections = true) => {
+        $('.course-section').removeClass(`filter-hide-${filterName}`);
+
+        if (checkForEmptySections) courseEntry.filterIfAnyEmptySection();
+    };
+
+    sectionEntry.filter = (filter, filterName, checkForEmptySections = true) => {
         $('.course-section').each((i, section) => {
             section = sectionEntry($(section));
 
-            filter(section) ? section.removeFilter(tag) : section.addFilter(tag);
+            filter(section) ? section.removeFilter(filterName) : section.addFilter(filterName);
         });
+
+        if(checkForEmptySections) courseEntry.filterIfAnyEmptySection();
     };
 
     sectionEntry.filterByDays = () => {
@@ -755,7 +767,7 @@ const classCells = (() => {
     const searchParameterChange = event => {
         courseEntry.closeAll();
 
-        const tag = 'seatch';
+        const filterName = 'search';
 
         const searchQuery = ($('#search-box').val() || '').toUpperCase();
 
@@ -763,17 +775,16 @@ const classCells = (() => {
             case 'name':
                 courseEntry.filter(
                     course => course.nameContains(searchQuery),
-                    tag
+                    filterName
                 );
-                sectionEntry.filter(section => true, tag);
+                sectionEntry.clearFilter(filterName);
                 break;
             case 'instructor':
-                courseEntry.filter(course => true, tag);
+                courseEntry.clearFilter(filterName);
                 sectionEntry.filter(
                     section => section.instructorNameContains(searchQuery),
-                    tag
+                    filterName
                 );
-                courseEntry.filterIfAnyEmptySection();
                 break;
         }
     };
@@ -806,12 +817,10 @@ const classCells = (() => {
 (() => {
     $(document).on('input', '#day-filter-selections input', event => {
         sectionEntry.filterByDays();
-        courseEntry.filterIfAnyEmptySection();
     });
 
     if ($('#day-filter-selections input:not(:checked)').length > 0) {
         sectionEntry.filterByDays();
-        courseEntry.filterIfAnyEmptySection();
 
         $('#day-filter-selections').show();
     }
