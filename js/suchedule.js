@@ -173,8 +173,8 @@ const courseEntry = (() => {
     };
 
     courseEntry.prototype.showSelectionsOnSchedule = function () {
-        this.getSections('.course-section.selected').forEach(_section => {
-            _section.getClassCells().getElements().addClass('selection');
+        this.getSections('.course-section.selected').forEach(section => {
+            section.getClassCells().getElements().addClass('selection');
         });
 
         return this;
@@ -221,7 +221,7 @@ const courseEntry = (() => {
     };
 
     courseEntry.prototype.getSections = function (selector = '.course-section') {
-        return $.map(this.getElement().find(selector), _section => section($(_section)));
+        return $.map(this.getElement().find(selector), section => sectionEntry($(section)));
     };
 
     courseEntry.prototype.getCellCourseColor = function () {
@@ -237,8 +237,8 @@ const courseEntry = (() => {
 
         const color = colorPalette.getColor();
 
-        this.getSections('.course-section.selected').forEach(_section => {
-            _section.getClassCells().addCellCourse(cellCourses.make(_section.getName(), _section.getCrn(), color));
+        this.getSections('.course-section.selected').forEach(section => {
+            section.getClassCells().addCellCourse(cellCourses.make(section.getName(), section.getCrn(), color));
         });
 
         saveSchedule();
@@ -250,8 +250,8 @@ const courseEntry = (() => {
         if (this.isOnSchedule()) {
             colorPalette.putColor(this.getCellCourseColor());
 
-            this.getSections().forEach(_section => {
-                classCells.findContainsCrn(_section.getCrn()).removeCellCourse(_section.getCrn());
+            this.getSections().forEach(section => {
+                classCells.findContainsCrn(section.getCrn()).removeCellCourse(section.getCrn());
             });
         }
 
@@ -283,16 +283,14 @@ const courseEntry = (() => {
         return this;
     };
 
-    courseEntry.prototype.isSelectable = function () {
-        let isSelectable = true;
-
-        this.getElement().find('.course-sections').each((i, courseSections) => {
+    courseEntry.prototype.hasEmptySection = function () {
+        for (const courseSections of this.getElement().find('.course-sections')) {
             if ($(courseSections).find('.course-section:not([class*=filter-hide-])').length === 0) {
-                isSelectable = false;
+                return true;
             }
-        });
+        }
 
-        return isSelectable;
+        return false;
     };
 
     courseEntry.closeAll = () => {
@@ -301,38 +299,19 @@ const courseEntry = (() => {
 
     courseEntry.findByCode = code => courseEntry($(`.course-entry[data-code="${code}"]`));
 
-    courseEntry.filter = (sectionFilter, courseFilter) => {
+    courseEntry.filter = (filter, tag) => {
         $('.course-entry').each((i, course) => {
             course = courseEntry($(course));
 
-            course.getSections().forEach(section => {
-                sectionFilter(section) ? section.removeFilter('search') : section.addFilter('search');
-            });
-
-            courseFilter(course) ? course.removeFilter('search') : course.addFilter('search');
+            filter(course) ? course.removeFilter(tag) : course.addFilter(tag);
         });
     };
 
-    courseEntry.filterByDays = () => {
-        let days = [];
-
-        $('#day-filter-selections input').each((i, checkbox) => {
-            if ($(checkbox).is(':checked')) {
-                days.push(i);
-            }
-        });
-
-        //  TODO: Fix. This is a hack to always include courses with TBA days
-        days.push(5);
-
-        $('.course-entry').each((i, course) => {
-
-            course = courseEntry($(course));
-
-            course.getSections().forEach(_section => _section.filterByDays(days));
-
-            course.isSelectable() ? course.removeFilter('day') : course.addFilter('day');
-        });
+    courseEntry.filterIfAnyEmptySection = () => {
+        courseEntry.filter(
+            course => !course.hasEmptySection(),
+            'empty-section'
+        );
     };
 
     courseEntry.startDisplayMode = code => {
@@ -364,16 +343,16 @@ const courseEntry = (() => {
     return courseEntry;
 })();
 
-const section = (() => {
-    const section = function (crnOr$element) {
+const sectionEntry = (() => {
+    const sectionEntry = function (crnOr$element) {
         if (!(crnOr$element instanceof $)) {
-            return section.findByCrn(crnOr$element);
+            return sectionEntry.findByCrn(crnOr$element);
         }
 
-        return new section.prototype.Init(crnOr$element);
+        return new sectionEntry.prototype.Init(crnOr$element);
     };
 
-    section.prototype.Init = function ($element) {
+    sectionEntry.prototype.Init = function ($element) {
         this.getElement = function () {
             return $element;
         };
@@ -381,55 +360,55 @@ const section = (() => {
         return this;
     };
 
-    section.prototype.Init.prototype = section.prototype;
+    sectionEntry.prototype.Init.prototype = sectionEntry.prototype;
 
-    section.prototype.getCrn = function () {
+    sectionEntry.prototype.getCrn = function () {
         return this.getElement().data('crn');
     };
 
-    section.prototype.getName = function () {
+    sectionEntry.prototype.getName = function () {
         return this.getElement().data('section-name');
     };
 
-    section.prototype.getInstructorName = function () {
+    sectionEntry.prototype.getInstructorName = function () {
         return this.getElement().find('.instructor').text();
     };
 
-    section.prototype.instructorNameContains = function (query) {
+    sectionEntry.prototype.instructorNameContains = function (query) {
         return this.getInstructorName().toUpperCase().indexOf(query) > -1;
     };
 
-    section.prototype.getGeneralName = function () {
+    sectionEntry.prototype.getGeneralName = function () {
         return this.getName().split(' ', 2).shift();
     };
 
-    section.prototype.isSelected = function () {
+    sectionEntry.prototype.isSelected = function () {
         return this.getElement().hasClass('selected');
     };
 
-    section.prototype.deselectAlternatives = function () {
-        this.getElement().siblings('.selected').each((i, _section) => section($(_section)).deselect());
+    sectionEntry.prototype.deselectAlternatives = function () {
+        this.getElement().siblings('.selected').each((i, section) => sectionEntry($(section)).deselect());
 
         return this;
     };
 
-    section.prototype.addFilter = function (filterName) {
+    sectionEntry.prototype.addFilter = function (filterName) {
         this.getElement().addClass(`filter-hide-${filterName}`);
 
         return this;
     };
 
-    section.prototype.removeFilter = function (filterName) {
+    sectionEntry.prototype.removeFilter = function (filterName) {
         this.getElement().removeClass(`filter-hide-${filterName}`);
 
         return this;
     };
 
-    section.prototype.getCourseEntry = function () {
+    sectionEntry.prototype.getCourseEntry = function () {
         return courseEntry(this.getElement().parents('.course-entry'));
     };
 
-    section.prototype.getScheduleData = function () {
+    sectionEntry.prototype.getScheduleData = function () {
         return this.getElement().find('.section-day').map((i, el) => ({
             day: $(el).data('day'),
             start: $(el).data('start'),
@@ -437,21 +416,7 @@ const section = (() => {
         })).toArray();
     };
 
-    section.prototype.filterByDays = function (days) {
-        let availableInDays = true;
-
-        this.getElement().find('.section-day').each((i, sectionDay) => {
-            if (days.indexOf(Number($(sectionDay).data('day'))) === -1) {
-                availableInDays = false;
-            }
-        });
-
-        availableInDays ? this.removeFilter('day') : this.addFilter('day');
-
-        return this;
-    };
-
-    section.prototype.getClassCells = function () {
+    sectionEntry.prototype.getClassCells = function () {
         return classCells($(
             $.map(this.getScheduleData(), schedule =>
                 $('#schedule tr').slice(schedule.start + 1, schedule.start + schedule.duration + 1)
@@ -460,7 +425,7 @@ const section = (() => {
         ));
     };
 
-    section.prototype.select = function () {
+    sectionEntry.prototype.select = function () {
         this.getElement().addClass('selected');
 
         this.deselectAlternatives();
@@ -470,7 +435,7 @@ const section = (() => {
         return this;
     };
 
-    section.prototype.deselect = function (shouldNotifyCourseEntry = true) {
+    sectionEntry.prototype.deselect = function (shouldNotifyCourseEntry = true) {
         this.getElement().removeClass('selected');
 
         if (shouldNotifyCourseEntry) {
@@ -480,15 +445,49 @@ const section = (() => {
         return this;
     };
 
-    section.prototype.toggleSelect = function () {
+    sectionEntry.prototype.toggleSelect = function () {
         this.isSelected() ? this.deselect() : this.select();
 
         return this;
     };
 
-    section.findByCrn = crn => section($(`.course-section[data-crn="${crn}"]:first`));
+    sectionEntry.findByCrn = crn => sectionEntry($(`.course-section[data-crn="${crn}"]:first`));
 
-    return section;
+    sectionEntry.filter = (filter, tag) => {
+        $('.course-section').each((i, section) => {
+            section = sectionEntry($(section));
+
+            filter(section) ? section.removeFilter(tag) : section.addFilter(tag);
+        });
+    };
+
+    sectionEntry.filterByDays = () => {
+        let allowedDays = [];
+
+        $('#day-filter-selections input').each((i, checkbox) => {
+            if ($(checkbox).is(':checked')) {
+                allowedDays.push(i);
+            }
+        });
+
+        //  TODO: Fix. This is a hack to always include courses with TBA days
+        allowedDays.push(5);
+
+        sectionEntry.filter(
+            section => {
+                for (const sectionDay of section.getElement().find('.section-day')) {
+                    if (allowedDays.indexOf(Number($(sectionDay).data('day'))) === -1) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            'day'
+        );
+    };
+
+    return sectionEntry;
 })();
 
 const cellCourses = (() => {
@@ -717,11 +716,11 @@ const classCells = (() => {
     });
 
     $(document).on('click', '.course-section', event => {
-        section($(event.currentTarget)).toggleSelect();
+        sectionEntry($(event.currentTarget)).toggleSelect();
     });
 
     $(document).on('click', '.remove-course', event => {
-        section($(event.currentTarget).parent().data('crn')).toggleSelect();
+        sectionEntry($(event.currentTarget).parent().data('crn')).toggleSelect();
 
         event.stopPropagation();
     });
@@ -741,11 +740,11 @@ const classCells = (() => {
     });
 
     $(document).on('mouseenter', '.course-section', event => {
-        const _section = section($(event.currentTarget));
+        const section = sectionEntry($(event.currentTarget));
 
-        _section.getClassCells().getElements().addClass('interested');
+        section.getClassCells().getElements().addClass('interested');
 
-        cellCourses.findByGeneralSectionName(_section.getGeneralName()).getParentClassCells().getElements()
+        cellCourses.findByGeneralSectionName(section.getGeneralName()).getParentClassCells().getElements()
             .filter('.interested').addClass('make-available');
     });
 
@@ -756,20 +755,25 @@ const classCells = (() => {
     const searchParameterChange = event => {
         courseEntry.closeAll();
 
+        const tag = 'seatch';
+
         const searchQuery = ($('#search-box').val() || '').toUpperCase();
 
         switch($('#search-filter').val()) {
             case 'name':
                 courseEntry.filter(
-                    () => true,
-                    course => course.nameContains(searchQuery)
+                    course => course.nameContains(searchQuery),
+                    tag
                 );
+                sectionEntry.filter(section => true, tag);
                 break;
             case 'instructor':
-                courseEntry.filter(
+                courseEntry.filter(course => true, tag);
+                sectionEntry.filter(
                     section => section.instructorNameContains(searchQuery),
-                    course => course.isSelectable()
+                    tag
                 );
+                courseEntry.filterIfAnyEmptySection();
                 break;
         }
     };
@@ -800,10 +804,14 @@ const classCells = (() => {
 })();
 
 (() => {
-    $(document).on('input', '#day-filter-selections input', courseEntry.filterByDays);
+    $(document).on('input', '#day-filter-selections input', event => {
+        sectionEntry.filterByDays();
+        courseEntry.filterIfAnyEmptySection();
+    });
 
     if ($('#day-filter-selections input:not(:checked)').length > 0) {
-        courseEntry.filterByDays();
+        sectionEntry.filterByDays();
+        courseEntry.filterIfAnyEmptySection();
 
         $('#day-filter-selections').show();
     }
