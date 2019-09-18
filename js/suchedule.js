@@ -771,7 +771,7 @@ const classCells = (() => {
 
         const searchQuery = ($('#search-box').val() || '').toUpperCase();
 
-        switch($('#search-filter').val()) {
+        switch($('#search-category').val()) {
             case 'name':
                 courseEntry.filter(
                     course => course.nameContains(searchQuery),
@@ -789,7 +789,7 @@ const classCells = (() => {
         }
     };
 
-    $('#search-filter').on('change', searchParameterChange);
+    $('#search-category').on('change', searchParameterChange);
 
     $('#search-box').on('input', searchParameterChange);
 

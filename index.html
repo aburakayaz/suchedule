@@ -35,33 +35,31 @@
 </header>
 <div id="menu">
     <div id="menu-toggle" class="icon-menu button"></div>
-    <div id="input-container">
+    <div class="menu-item">
         <input id="search-box" title="search" type="text" placeholder="Search for">
-        <select id="search-filter">
+        <select id="search-category">
             <option value="name">Course Name</option>
             <option value="instructor">Instructor</option>
         </select>
     </div>
-    <div id="filter-container">
-        <div id="filter-menu">
-            <div id="day-filter" class="filter-icon icon-calendar">
-            </div>
-            <div id="day-filter-selections" class="filter-selections">
-                    <input id="day-filter-0" type="checkbox" checked>
-                    <label for="day-filter-0">Mon</label>
-                    <input id="day-filter-1" type="checkbox" checked>
-                    <label for="day-filter-1">Tue</label>
-                    <input id="day-filter-2" type="checkbox" checked>
-                    <label for="day-filter-2">Wed</label>
-                    <input id="day-filter-3" type="checkbox" checked>
-                    <label for="day-filter-3">Thu</label>
-                    <input id="day-filter-4" type="checkbox" checked>
-                    <label for="day-filter-4">Fri</label>
-            </div>
+    <div id="day-filter" class="menu-item">
+        <div id="day-filter-label" class="filter-icon icon-calendar">
+        </div>
+        <div id="day-filter-selections">
+                <input id="day-filter-0" type="checkbox" checked>
+                <label for="day-filter-0">Mon</label>
+                <input id="day-filter-1" type="checkbox" checked>
+                <label for="day-filter-1">Tue</label>
+                <input id="day-filter-2" type="checkbox" checked>
+                <label for="day-filter-2">Wed</label>
+                <input id="day-filter-3" type="checkbox" checked>
+                <label for="day-filter-3">Thu</label>
+                <input id="day-filter-4" type="checkbox" checked>
+                <label for="day-filter-4">Fri</label>
         </div>
     </div>
-    <div id="course-list-shadow"></div>
-    <div id="course-list" class="loading"></div>
+    <div id="course-list-shadow" class="menu-item"></div>
+    <div id="course-list" class="menu-item loading"></div>
 </div>
 <div id="main-content">
     <table id="schedule">
