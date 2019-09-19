@@ -107,6 +107,10 @@ header .button {
     opacity: 0.7;
 }
 
+#search-box-container {
+    min-height: 42px;
+}
+
 #search-box {
     min-width: 0;
     flex: 1;
