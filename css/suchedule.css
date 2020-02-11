@@ -549,6 +549,40 @@ tr > td:first-child, th:first-child {
     }
 }
 
+/* Google Calendar Extension Styles */
+#google-calendar-modal div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.2em;
+}
+
+.modal-button {
+    padding: 0.4rem 0.9rem 0.4rem 0.6rem;
+    margin-top: 0.3em;
+}
+
+#notification-area {
+    height: 6rem;
+    overflow-y: scroll;
+    padding: 0.4em;
+    align-items: flex-start !important;
+    background-color: aliceblue;
+    border: 1px solid #999;
+    border-right: unset;
+    border-left: unset;
+    color: #4d4d4d;
+}
+
+#notification-area > * {
+    margin: unset;
+    margin-bottom: 0.4em;
+}
+
+#current-calendar-name {
+    font-weight: bold;
+}
+
 /* ANIMATIONS */
 
 @keyframes shake {

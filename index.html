@@ -21,17 +21,20 @@
     <title>SUchedule</title>
     <link rel="stylesheet" href="font/animation.min.css">
     <link rel="stylesheet" href="font/fontello.min.css">
+    <link rel="stylesheet" href="css/jquery.modal.min.css">
     <link rel="stylesheet" href="css/suchedule.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 </head>
+
 <body>
 <header>
     <div id="logo">SUchedule</div>
     <div id="about-button" class="icon-help button"></div>
     <div id="clear-button" class="icon-trash button">Clear</div>
     <div id="copy-button" class="icon-clipboard button">Copy Crn</div>
+    <div id="google-calendar-button" class="icon-google-calendar button">Add to Calendar</div>
 </header>
 <div id="menu">
     <div id="menu-toggle" class="icon-menu button"></div>
@@ -236,9 +239,46 @@
         <div class="notification-button button">Apology Accepted</div>
     </div>
 </div>
+<div id="google-calendar-modal" class="modal">
+    <h3>Add current courses to your Google Calendar</h3>
+
+    Notifications:
+    <div id="notification-area">
+    </div>
+
+    <div id="unauthorized-area">
+        <button id="authorize-button" class="icon-link-ext-alt modal-button">Sign-in</button>
+    </div>
+
+    <div id="authorized-area">
+        <div id="current-google-calendar">
+            <div id="calendar-add-area">
+                <label for="current-week">
+                    Current week of the Semester:
+                    <input id="current-week" type="number" max="14" min="1" value="1"/>
+                </label>
+
+                <button id="add-button" class="icon-ok modal-button">Add Calendar</button>
+            </div>
+
+            <div id="calendar-delete-area">
+                <span>You already have a calendar for this term named:</span>
+                <p id="current-calendar-name"></p>
+
+                <button id="delete-button" class="icon-trash modal-button">Delete Calendar</button>
+            </div>
+        </div>
+
+        <button id="signout-button" class="icon-cancel modal-button">Sign Out</button>
+    </div>
+</div>
+
 <script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery.modal.min.js"></script>
 <script src="js/clipboard.min.js"></script>
 <script src="js/suchedule.min.js"></script>
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="js/google_calendar_integration.min.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113204083-2"></script>
 <script>

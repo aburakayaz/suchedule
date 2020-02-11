@@ -1,8 +1,8 @@
-const config = {
+const config = Object.freeze({
     term: '201902',
     infoLink: 'http://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=201902&crn_in=',
     dataVersion: 12
-};
+});
 
 const templateGenerator = (() => {
     const getDayFromCode = (() => {
@@ -72,8 +72,8 @@ const templateGenerator = (() => {
     `;
 
     return {
-        makeCourseEntry: makeCourseEntry,
-        makeCellCourse: makeCellCourse
+        makeCourseEntry,
+        makeCellCourse
     };
 })();
 
@@ -470,7 +470,7 @@ const sectionEntry = (() => {
             filter(section) ? section.removeFilter(filterName) : section.addFilter(filterName);
         });
 
-        if(checkForEmptySections) courseEntry.filterIfAnyEmptySection();
+        if (checkForEmptySections) courseEntry.filterIfAnyEmptySection();
     };
 
     sectionEntry.filterByDays = () => {
@@ -540,6 +540,7 @@ const cellCourses = (() => {
     cellCourses.prototype.isOfMainCourse = function () {
         return /^[A-Z]+\d+ .*$/.test(this.getSectionName());
     };
+
     cellCourses.prototype.animateCloseButtons = function (propagate = true) {
         if (propagate && this.isOfMainCourse()) {
             cellCourses.findByCourseCode(this.getCourseCodeWithoutSpace()).animateCloseButtons(false);
@@ -648,15 +649,16 @@ const classCells = (() => {
     return classCells;
 })();
 
-(() => {
-    if (localStorage.getItem('visited_before') !== null) {
-        localStorage.removeItem('visited_before');
-
+(showFirstVisitNotifications = () => {
+    if (localStorage.getItem('visited-before') === null) {
         localStorage.setItem('visited-before', 'yes');
+
+        $('#notify-about').show();
+        $('#notify-cookies').show();
     }
 })();
 
-(() => {
+(updateCourseData = () => {
     const storageKey = `course-data-${config.term}-${config.dataVersion}`;
     const data = localStorage.getItem(storageKey);
 
@@ -687,7 +689,7 @@ const classCells = (() => {
     };
 
     if (data !== null) {
-        const { courses, instructors } = JSON.parse(data);
+        const {courses, instructors} = JSON.parse(data);
 
         courseEntry.populate(courses, instructors);
 
@@ -695,7 +697,7 @@ const classCells = (() => {
     }
 
     $.getJSON(`data-v${config.dataVersion}.min.json`, data => {
-        const { courses, instructors } = data;
+        const {courses, instructors} = data;
 
         clearOldData();
 
@@ -705,16 +707,7 @@ const classCells = (() => {
     });
 })();
 
-(() => {
-    if (localStorage.getItem('visited-before') === null) {
-        $('#notify-about').show();
-        $('#notify-cookies').show();
-
-        localStorage.setItem('visited-before', 'yes');
-    }
-})();
-
-(() => {
+(setEvents = () => {
     $(document).on('click', '.course-header', event => {
         courseEntry($(event.currentTarget).parent()).toggleOpen();
 
@@ -771,7 +764,7 @@ const classCells = (() => {
 
         const searchQuery = ($('#search-box').val() || '').toUpperCase();
 
-        switch($('#search-category').val()) {
+        switch ($('#search-category').val()) {
             case 'name':
                 courseEntry.filter(
                     course => course.nameContains(searchQuery),
@@ -814,7 +807,7 @@ const classCells = (() => {
     $(document).on('click', '#about-button', () => $('#notify-about').fadeIn(500));
 })();
 
-(() => {
+(setWeekdayFilterEvents = () => {
     $(document).on('input', '#day-filter-selections input', event => {
         sectionEntry.filterByDays();
     });
@@ -826,7 +819,7 @@ const classCells = (() => {
     }
 })();
 
-(() => {
+(loadScheduleFromLocalStorage = () => {
     const savedSchedule = localStorage.getItem('saved-schedule');
 
     if (savedSchedule === null) {
@@ -838,7 +831,7 @@ const classCells = (() => {
     });
 })();
 
-(() => {
+(setNotificationEvents = () => {
     $(document).on('click', '.notification .button', event => {
         $(event.target).closest('.notification').fadeOut(500);
     });
@@ -853,7 +846,7 @@ const classCells = (() => {
     });
 })();
 
-(() => {
+(initializeClipboardJS = () => {
     const clipboard = new ClipboardJS('#copy-button', {
         text: () => cellCourses.getAllCrnDataToCopy()
     });
