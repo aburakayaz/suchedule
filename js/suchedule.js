@@ -699,11 +699,11 @@ const classCells = (() => {
     }
 
     $.getJSON(`data-v${config.dataVersion}.min.json`, data => {
-        const {courses, instructors} = data;
+        const {courses, instructors, places} = data;
 
         clearOldData();
 
-        courseEntry.populate(courses, instructors);
+        courseEntry.populate(courses, instructors, places);
 
         localStorage.setItem(storageKey, JSON.stringify(data));
     });
