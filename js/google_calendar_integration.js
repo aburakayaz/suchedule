@@ -100,6 +100,7 @@ const CALENDAR_API = (() => {
                 'useDefault': false
             },
             'summary': lecture.summary,
+            'description': lecture.course_name,
             'recurrence': [`RRULE:FREQ=WEEKLY;COUNT=${weeksToRecur}`],
         };
 
@@ -317,7 +318,7 @@ const GOOGLE_CALENDAR_MODAL = (($element) => {
                                             course_name: course.name,
                                             day: lecture.day,
                                             startTime, endTime,
-                                            place: lecture.place,
+                                            place: course_data.places[lecture.place],
                                         })
                                     }
                                 )

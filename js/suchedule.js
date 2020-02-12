@@ -1,12 +1,13 @@
 const config = Object.freeze({
     term: '201902',
     infoLink: 'http://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=201902&crn_in=',
-    dataVersion: 12
+    dataVersion: 13
 });
 
 const templateGenerator = (() => {
     const getDayFromCode = (() => {
-        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'TBA'];
+        // const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'TBA'];
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'TBA'];
 
         return dayCode => {
             return days[dayCode];
@@ -20,10 +21,10 @@ const templateGenerator = (() => {
 
         const end = start + duration;
 
-        return `${start < 10 ? '0' : ''}${start}:40 - ${end < 10 ? '0' : ''}${end}:30`;
+        return `${start < 10 ? '0' : ''}${start}:40-${end < 10 ? '0' : ''}${end}:30`;
     };
 
-    const makeCourseEntry = (course, instructors) => `
+    const makeCourseEntry = (course, instructors, places) => `
         <div class="course-entry hide-info" data-code="${course.code}">
             <div class="course-header">
                 <div class="course-name">${course.code} - ${course.name}</div>
@@ -48,8 +49,9 @@ const templateGenerator = (() => {
                             <div class="section-day" 
                                 data-day="${schedule.day}"
                                 data-start="${schedule.start}" 
-                                data-duration="${schedule.duration}">
-                                ${getDayFromCode(schedule.day)} | ${getScheduleHours(schedule.start, schedule.duration)}
+                                data-duration="${schedule.duration}"
+                                data-place="${places[schedule.place]}">
+                                ${getDayFromCode(schedule.day)} ${getScheduleHours(schedule.start, schedule.duration)} ${places[schedule.place]}
                             </div>
                         `).join('')}
                         </div>
@@ -336,11 +338,11 @@ const courseEntry = (() => {
 
     courseEntry.make = (course, instructors) => courseEntry(templateGenerator.makeCourseEntry(course, instructors));
 
-    courseEntry.populate = (courses, instructors) => {
+    courseEntry.populate = (courses, instructors, places) => {
         const $list = $('#course-list').removeClass('loading');
 
         courses.forEach(course => {
-            $list.append(templateGenerator.makeCourseEntry(course, instructors));
+            $list.append(templateGenerator.makeCourseEntry(course, instructors, places));
         });
     };
 
@@ -689,9 +691,9 @@ const classCells = (() => {
     };
 
     if (data !== null) {
-        const {courses, instructors} = JSON.parse(data);
+        const {courses, instructors, places} = JSON.parse(data);
 
-        courseEntry.populate(courses, instructors);
+        courseEntry.populate(courses, instructors, places);
 
         return;
     }
