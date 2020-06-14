@@ -1,0 +1,24 @@
+#navbar{
+    background-color: #004288;
+    color: white;
+    padding: .4vh .5vw;
+    .logo{
+        font-family: 'Lato', sans-serif;
+        font-size: 2em;
+        font-weight: 700;
+        letter-spacing: -2px;
+    }
+    .nav-links{
+        font-family: 'Noto Sans', sans-serif;
+        margin: auto 0;
+        a{
+            font-size: 1em;
+            margin-left: 2vh;
+            color: white;
+            &:hover{
+                text-decoration: none;
+                color: #ddd;
+            }
+        }
+    }
+}

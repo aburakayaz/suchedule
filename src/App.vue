@@ -1,28 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+   <Navbar />
+   <transition name="router-animation" enter-active-class="animate__animated animate__fadeIn animate__faster animate__delay-1s" leave-active-class="animate__animated animate__fadeOut animate__faster">
+       <router-view></router-view>
+   </transition>
+    
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Navbar from './components/Navbar'
+import store, {actions} from './_store/store';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Navbar
+  },
+  store,
+  methods: {
+    addCourse(course){
+      store.commit(actions.updateSchedule, course);
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css";
+#app{
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 </style>
