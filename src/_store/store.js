@@ -10,6 +10,9 @@ const store = new Vuex.Store({
         sidebar: true
     },
     getters: {
+        getAllInstructors: state => {
+            return state.schedule.allInstructors;
+        },
         sidebarState: state => {
             return state.sidebar;
         },

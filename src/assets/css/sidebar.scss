@@ -3,12 +3,14 @@
         width: 100%;
         background-color: #f5f5f5;
         padding: 1vh .5vh;
+        height: 100vh;
+        transition: all .18s cubic-bezier(0.4,0,0.2,1);
         .search-bar{
             .course-search{
                 padding: .5vh 1vw;
                 width: 60%;
                 margin-left: 5%;
-                border-radius: 6px 0 0 6px;
+                border-radius: 4px 0 0 4px;
                 border: solid #ddd;
                 border-width: 2px 0 2px 2px;
                 outline: 0;
@@ -19,12 +21,131 @@
             .filter-search{
                 width: 30%;
                 background-color: #004288;
-                border-radius: 0 6px 6px 0;
+                border-radius: 0 4px 4px 0;
                 color: white;
                 border: solid #004288;
                 border-width: 2px 2px 2px 0;
-                padding: .5vh 0 .7vh 0;
-                
+                padding: .5vh 0 .7vh .5vh; 
+            } 
+        }
+        .hide-sidebar{
+            display: inline-block;
+            position: absolute;
+            right: -4vh;
+            top: -1vh;
+            color: white;
+            cursor: pointer;
+            padding: .5vh 1.4vh;
+            font-size: 1.4em;
+            background-color: #004288;
+        }
+        .day-filter{
+            margin-top: 1vh;
+            .day-filter-text{
+                font-weight: 700;
+                margin: auto 0;
+                display: inline-block;
+            }
+            .day-checkbox{
+                display: inline-block;
+                background-color: transparent;
+                color: #004288;
+                font-weight: 700;
+                border: 1.5px solid #004288;
+                transition: .18s cubic-bezier(0.4,0,0.2,1);
+                font-family: 'Lato', sans-serif;
+                width: 4.5vh;
+                padding: .4vh 0;
+                border-radius: 4px;
+                margin-left: 10px;
+                letter-spacing: -1px;
+                font-size: .7em;
+                user-select: none;
+                text-align: center;
+                cursor: pointer;
+
+                &.active{
+                    color: white;
+                    background-color: #004288;
+                    color: white;
+                }
+            }
+        }
+        .courses{
+            max-height: 85vh;
+            overflow-y: scroll;
+            .course{
+                max-width: 90%;
+                margin: 10px auto;
+                border: 2px solid #004288;
+                background-color: #004288;
+                padding: .4vh 1vw;
+                border-radius: 4px;
+                color: white;
+                text-overflow: ellipsis;
+                user-select: none;
+                white-space: nowrap;
+                .header{
+                    cursor: pointer;
+                }
+                .title{
+                    display: inline-block;
+                }
+                .caret{
+                    float: right;
+                }
+                &.hide-sections{
+                    .sections{
+                        display: none;
+                    }
+                }
+                .sections{
+                    margin-top: 5px;
+                    .section-header{
+                        font-size: 1em;
+                        font-weight: 700;
+                    }
+                    .section-container{
+                        margin: 10px 0;
+                        background-color: #f5f5f5;
+                        color: black;
+                        border-radius: 6px;
+                        padding: 4px 6px;
+                        margin: 0 0 10px 0;
+                        .section-info{
+                            .instructor-title{
+                                display: block;
+                                font-size: .8em;
+                            }
+                        } 
+                        .section-select{
+                            display: block;
+                            margin-right: 10px;
+                            cursor: pointer;
+                            font-size: 1.5em;
+                        }
+                    }
+                    span.info-box{
+                        display: block;
+                        width: max-content;
+                        border: 1px solid #4183c4;
+                        font-size: .8em;
+                        border-radius: 6px;
+                        span.section{
+                            display: inline-block;
+                            padding: 2px 3px;
+                        }
+                        .go-info{
+                            display: inline-block;
+                            background-color: #4183c4;
+                            padding: 2px 3px;
+                            a{
+                                color: white;
+                                letter-spacing: 1px;
+                            }
+                        }
+                    }
+                }
             }
         }
 }

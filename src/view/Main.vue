@@ -1,10 +1,10 @@
 <template>
   <div id="main">
    <div class="row">
-     <div class="col-md-3" v-show="this.sidebarState">
+     <div class="col-md-3" :style="this.sidebarState ? 'position: absolute;' : ''">
        <Sidebar />
      </div>
-     <div :class="'col-md-'+(this.sidebarState ? '9' : '12')"></div>
+     <div :class="'col-md-'+(this.sidebarState ? '9' : '12')">a</div>
    </div>
     
   </div>

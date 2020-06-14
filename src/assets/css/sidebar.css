@@ -3,13 +3,16 @@
   width: 100%;
   background-color: #f5f5f5;
   padding: 1vh .5vh;
+  height: 100vh;
+  -webkit-transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #sidebar .search-bar .course-search {
   padding: .5vh 1vw;
   width: 60%;
   margin-left: 5%;
-  border-radius: 6px 0 0 6px;
+  border-radius: 4px 0 0 4px;
   border: solid #ddd;
   border-width: 2px 0 2px 2px;
   outline: 0;
@@ -22,10 +25,154 @@
 #sidebar .search-bar .filter-search {
   width: 30%;
   background-color: #004288;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 4px 4px 0;
   color: white;
   border: solid #004288;
   border-width: 2px 2px 2px 0;
-  padding: .5vh 0 .7vh 0;
+  padding: .5vh 0 .7vh .5vh;
+}
+
+#sidebar .hide-sidebar {
+  display: inline-block;
+  position: absolute;
+  right: -4vh;
+  top: -1vh;
+  color: white;
+  cursor: pointer;
+  padding: .5vh 1.4vh;
+  font-size: 1.4em;
+  background-color: #004288;
+}
+
+#sidebar .day-filter {
+  margin-top: 1vh;
+}
+
+#sidebar .day-filter .day-filter-text {
+  font-weight: 700;
+  margin: auto 0;
+  display: inline-block;
+}
+
+#sidebar .day-filter .day-checkbox {
+  display: inline-block;
+  background-color: transparent;
+  color: #004288;
+  font-weight: 700;
+  border: 1.5px solid #004288;
+  -webkit-transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Lato', sans-serif;
+  width: 4.5vh;
+  padding: .4vh 0;
+  border-radius: 4px;
+  margin-left: 10px;
+  letter-spacing: -1px;
+  font-size: .7em;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+#sidebar .day-filter .day-checkbox.active {
+  color: white;
+  background-color: #004288;
+  color: white;
+}
+
+#sidebar .courses {
+  max-height: 85vh;
+  overflow-y: scroll;
+}
+
+#sidebar .courses .course {
+  max-width: 90%;
+  margin: 10px auto;
+  border: 2px solid #004288;
+  background-color: #004288;
+  padding: .4vh 1vw;
+  border-radius: 4px;
+  color: white;
+  text-overflow: ellipsis;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  white-space: nowrap;
+}
+
+#sidebar .courses .course .header {
+  cursor: pointer;
+}
+
+#sidebar .courses .course .title {
+  display: inline-block;
+}
+
+#sidebar .courses .course .caret {
+  float: right;
+}
+
+#sidebar .courses .course.hide-sections .sections {
+  display: none;
+}
+
+#sidebar .courses .course .sections {
+  margin-top: 5px;
+}
+
+#sidebar .courses .course .sections .section-header {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+#sidebar .courses .course .sections .section-container {
+  margin: 10px 0;
+  background-color: #f5f5f5;
+  color: black;
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin: 0 0 10px 0;
+}
+
+#sidebar .courses .course .sections .section-container .section-info .instructor-title {
+  display: block;
+  font-size: .8em;
+}
+
+#sidebar .courses .course .sections .section-container .section-select {
+  display: block;
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+#sidebar .courses .course .sections span.info-box {
+  display: block;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  border: 1px solid #4183c4;
+  font-size: .8em;
+  border-radius: 6px;
+}
+
+#sidebar .courses .course .sections span.info-box span.section {
+  display: inline-block;
+  padding: 2px 3px;
+}
+
+#sidebar .courses .course .sections span.info-box .go-info {
+  display: inline-block;
+  background-color: #4183c4;
+  padding: 2px 3px;
+}
+
+#sidebar .courses .course .sections span.info-box .go-info a {
+  color: white;
+  letter-spacing: 1px;
 }
 /*# sourceMappingURL=sidebar.css.map */
