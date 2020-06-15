@@ -1,0 +1,60 @@
+#timetable{
+    table.timetable{
+        table-layout: fixed;
+        width: 100%;
+        thead{
+            tr{
+                th{
+                    text-align: center;
+                    color: white;
+                    &:nth-child(odd){
+                        background-color: #3498db;
+                    }
+                    &:nth-child(even){
+                        background-color: #2980b9;
+                    }
+                    &.hour-cell{
+                        width: 50px;
+                    }
+                    max-width: 20vw;
+                }
+            }
+        }
+        tbody{
+            height: 80vh;
+            tr{
+                display: table-row;
+                height: max-content;
+                &:nth-child(odd){
+                    td{
+                        &:nth-child(2n+1){
+                            background-color: #ecf0f1;
+                        }
+                        &:nth-child(2n){
+                            background-color: #bdc3c7;
+                        }
+                    }
+                }
+                &:nth-child(even){
+                    td{
+                        &:nth-child(2n+1){
+                            background-color: #B1BDBE;
+                        }
+                        &:nth-child(2n){
+                            background-color: #9EA8A9;
+                        }
+                    }
+                }
+                td{
+                    
+                    &.hour-cell{
+                        max-width: max-content;
+                        background-color: #f5f5f5;
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}

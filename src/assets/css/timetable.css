@@ -1,0 +1,59 @@
+#timetable table.timetable {
+  table-layout: fixed;
+  width: 100%;
+}
+
+#timetable table.timetable thead tr th {
+  text-align: center;
+  color: white;
+  max-width: 20vw;
+}
+
+#timetable table.timetable thead tr th:nth-child(odd) {
+  background-color: #3498db;
+}
+
+#timetable table.timetable thead tr th:nth-child(even) {
+  background-color: #2980b9;
+}
+
+#timetable table.timetable thead tr th.hour-cell {
+  width: 50px;
+}
+
+#timetable table.timetable tbody {
+  height: 80vh;
+}
+
+#timetable table.timetable tbody tr {
+  display: table-row;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+
+#timetable table.timetable tbody tr:nth-child(odd) td:nth-child(2n+1) {
+  background-color: #ecf0f1;
+}
+
+#timetable table.timetable tbody tr:nth-child(odd) td:nth-child(2n) {
+  background-color: #bdc3c7;
+}
+
+#timetable table.timetable tbody tr:nth-child(even) td:nth-child(2n+1) {
+  background-color: #B1BDBE;
+}
+
+#timetable table.timetable tbody tr:nth-child(even) td:nth-child(2n) {
+  background-color: #9EA8A9;
+}
+
+#timetable table.timetable tbody tr td.hour-cell {
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  background-color: #f5f5f5;
+  font-weight: bold;
+  text-align: center;
+}
+/*# sourceMappingURL=timetable.css.map */
