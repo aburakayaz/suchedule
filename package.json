@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "fs": "0.0.1-security",
+    "jquery": "^3.5.1",
     "vue": "^2.6.11",
     "vue-jquery": "^1.0.6",
     "vue-router": "^3.3.4",
