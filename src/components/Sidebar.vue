@@ -47,81 +47,21 @@
                                 <div class="col-md-9 section-info">
                                     <span class="instructor-title">Instructors</span>
                                     <strong>{{ instructorName(section.instructors) }}</strong>
+                                    <div class="section-days">
+                                        <div v-for="schedule in section.schedule" :key="schedule.day+schedule.duration+schedule.start+schedule.day" class="section-day">
+                                            <span v-if="schedule.day == 0">Mon </span>
+                                            <span v-else-if="schedule.day == 1">Tue </span>
+                                            <span v-else-if="schedule.day == 2">Wed </span>
+                                            <span v-else-if="schedule.day == 3">Thu </span>
+                                            <span v-else-if="schedule.day == 4">Fri </span>
+
+                                            <span>{{ schedule.start+8 }}.40 - {{ schedule.start+8+schedule.duration }}.40 </span>
+                                            {{ getPlace(schedule.place) }}
+                                        </div>
+                                    </div>
                                     <span class="info-box mt-2">
                                         <span class="section">
-                                            A12
-                                        </span>
-                                        <span class="go-info">
-                                            <router-link to="#" class="info-link">info</router-link>
-                                        </span>
-                                    </span>
-                                </div>
-
-                                <div class="col-md-3 text-right">
-                                    <span class="section-select">
-                                        <i class="far fa-plus"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="course_NS102" @click="toggleSections('NS102')" class="course">
-                    <div class="header">
-                        <div class="title">
-                        <strong>NS 102</strong> - Natural Sciences
-                    </div>
-                    <div class="caret">
-                        <i class="fal fa-angle-down"></i>
-                    </div>
-                    </div>
-                    <div class="sections">
-                        <div class="section-header">Lectures</div>
-                        <div class="section-container">
-                            <div class="row">
-                                <div class="col-md-9 section-info">
-                                    <span class="instructor-title">Instructors</span>
-                                    <strong>Yuki Kaneko, Erhan Kalemci</strong>
-                                    <span class="info-box mt-2">
-                                        <span class="section">
-                                            A12
-                                        </span>
-                                        <span class="go-info">
-                                            <router-link to="#" class="info-link">info</router-link>
-                                        </span>
-                                    </span>
-                                </div>
-
-                                <div class="col-md-3 text-right">
-                                    <span class="section-select">
-                                        <i class="far fa-plus"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div data-toggled="false" id="course_NS101" @click="toggleSections('NS101')" class="course hide-sections">
-                    <div class="header">
-                        <div class="title">
-                        <strong>NS 101</strong> - Natural Sciences
-                    </div>
-                    <div class="caret">
-                        <i class="fal fa-angle-right"></i>
-                    </div>
-                    </div>
-                    <div class="sections">
-                        <div class="section-header">Lectures</div>
-                        <div class="section-container">
-                            <div class="row">
-                                <div class="col-md-9 section-info">
-                                    <span class="instructor-title">Instructors</span>
-                                    <strong>Yuki Kaneko, Erhan Kalemci</strong>
-                                    <span class="info-box mt-2">
-                                        <span class="section">
-                                            A12
+                                            {{ section.group }}
                                         </span>
                                         <span class="go-info">
                                             <router-link to="#" class="info-link">info</router-link>
@@ -197,6 +137,9 @@ export default {
         },
         instructorName(id){
             return this.$store.getters.getAllInstructors[id]
+        },
+        getPlace(id){
+            return this.$store.getters.getAllPlaces[id];
         }
     },
 }

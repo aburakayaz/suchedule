@@ -143,6 +143,11 @@
   font-size: .8em;
 }
 
+#sidebar .courses .course .sections .section-container .section-info .section-days .section-day {
+  font-size: .9em;
+  font-family: 'Noto Sans', sans-serif;
+}
+
 #sidebar .courses .course .sections .section-container .section-select {
   display: block;
   margin-right: 10px;
