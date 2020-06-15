@@ -1,10 +1,12 @@
 <template>
   <div id="main">
    <div class="row">
-     <div class="col-md-3" :style="this.sidebarState ? 'position: absolute;' : ''">
+     <div class="col-md-3" :style="this.sidebarState ? '' : 'position: absolute;'">
        <Sidebar />
      </div>
-     <div :class="'col-md-'+(this.sidebarState ? '9' : '12')">a</div>
+     <div :class="'col-md-'+(this.sidebarState ? '9' : '12')">
+         <Timetable />
+     </div>
    </div>
     
   </div>
@@ -12,10 +14,12 @@
 
 <script>
 import Sidebar from '../components/Sidebar'
+import Timetable from '../components/Timetable'
 export default {
   name: 'App',
   components: {
-    Sidebar
+    Sidebar,
+    Timetable
   },
   computed: {
     sidebarState(){
