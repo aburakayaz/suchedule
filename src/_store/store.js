@@ -27,6 +27,9 @@ const store = new Vuex.Store({
         },
         getWizardSchedule: state => {
             return state.schedule.wizardSchedule.schedule;
+        },
+        getAllPlaces: state => {
+            return state.schedule.allPlaces;
         }
     },
     mutations: {

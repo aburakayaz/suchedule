@@ -3,6 +3,7 @@ var data = {"courses":[{"name":"Academic Literacies","code":"AL 102","classes":[
 var state = {
     allCourses: data.courses,
     allInstructors: data.instructors,
+    allPlaces: data.places,
     activeSchedule: [],
     wizardSchedule: {
         schedule: [],
