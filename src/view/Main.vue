@@ -1,11 +1,13 @@
 <template>
-  <div id="main">
+  <div id="main" style="height: 100%;">
    <div class="row">
-     <div class="col-md-3" :style="this.sidebarState ? '' : 'position: absolute;'">
+     <div class="col-md-3" :style="this.sidebarState ? 'position:relative' : 'position: absolute;'">
        <Sidebar />
      </div>
-     <div :class="'col-md-'+(this.sidebarState ? '9' : '12')">
-         <Timetable />
+     <div :class="'main-container col-md-'+(this.sidebarState ? '9' : '12')">
+         <div class="main-container">
+             <Timetable />
+         </div>
      </div>
    </div>
     
@@ -35,5 +37,9 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+.main-container{
+    height: 100%;
+    overflow: auto;
 }
 </style>

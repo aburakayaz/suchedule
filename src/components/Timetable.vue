@@ -12,17 +12,9 @@
                     <th>Friday</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td class="hour-cell">8.40</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="hour-cell">9.40</td>
+            <tbody id="rows">
+                <tr v-for="(row) in [0,1,2,3,4,5,6,7,8,9,10]" :key="row">
+                    <td class="hour-cell">{{ row+8 }}.40</td>
                     <td></td>
                     <td></td>
                     <td></td>
