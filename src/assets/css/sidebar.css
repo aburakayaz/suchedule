@@ -89,6 +89,8 @@
 }
 
 #sidebar .courses .course {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
   max-width: 90%;
   margin: 10px auto;
   border: 2px solid #004288;
@@ -96,20 +98,25 @@
   padding: .4vh 1vw;
   border-radius: 4px;
   color: white;
-  text-overflow: ellipsis;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  white-space: nowrap;
 }
 
 #sidebar .courses .course .header {
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 #sidebar .courses .course .title {
   display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 80%;
 }
 
 #sidebar .courses .course .caret {
@@ -121,6 +128,8 @@
 }
 
 #sidebar .courses .course .sections {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
   margin-top: 5px;
 }
 
@@ -145,7 +154,7 @@
 
 #sidebar .courses .course .sections .section-container .section-info .section-days .section-day {
   font-size: .9em;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Noto Sans', monospace;
 }
 
 #sidebar .courses .course .sections .section-container .section-select {
@@ -167,7 +176,7 @@
 
 #sidebar .courses .course .sections span.info-box span.section {
   display: inline-block;
-  padding: 2px 3px;
+  padding: 2px 6px;
 }
 
 #sidebar .courses .course .sections span.info-box .go-info {
