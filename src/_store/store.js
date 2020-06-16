@@ -7,6 +7,7 @@ import data from './data'
 const store = new Vuex.Store({
     state: {
         schedule: data,
+        highlighted: [],
         sidebar: true
     },
     getters: {
@@ -33,6 +34,10 @@ const store = new Vuex.Store({
         }
     },
     mutations: {
+        // to be completed
+        highlightTable(state, section){
+            return section;
+        },
         toggleSidebar(state){
             state.sidebar = !state.sidebar;
         },
