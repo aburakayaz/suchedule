@@ -9,6 +9,11 @@
   font-size: 2em;
   font-weight: 700;
   letter-spacing: -2px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
 }
 
 #navbar .nav-links {

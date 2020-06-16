@@ -2,7 +2,7 @@
     <div id="navbar">
         <div class="row">
             <div class="col-md-3 logo">
-                SUchedule
+                <span @click="pushHome">SUchedule</span>
             </div>
             <div class="col-md-9 text-right nav-links">
                 <router-link to="/about"><i class="fas fa-question"></i> About</router-link>
@@ -17,7 +17,12 @@
 </template>
 <script>
 export default {
-    name: 'Navbar'
+    name: 'Navbar',
+    methods: {
+        pushHome(){
+            this.$router.push("/");
+        }
+    }
 }
 </script>
 <style scoped src="@/assets/css/main.css">
