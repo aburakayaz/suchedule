@@ -52,6 +52,7 @@
 </template>
 <script>
 import $ from 'jquery';
+//import Sura from 'su-sura';
 export default {
     name: 'Wizard',
     data(){
