@@ -1,6 +1,6 @@
 <template>
   <div id="main" style="height: 100%;">
-   <div class="row">
+   <div class="row" style="height: 100%">
      <div class="col-md-3" :style="this.sidebarState ? 'position:relative' : 'position: absolute;'">
        <Sidebar />
      </div>
@@ -10,7 +10,7 @@
          </div>
      </div>
    </div>
-    
+
   </div>
 </template>
 
@@ -41,5 +41,6 @@ export default {
 .main-container{
     height: 100%;
     overflow: auto;
+    box-sizing: border-box;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div id="timetable">
+    <div id="timetable" style="height: 100%">
 
         <table class="timetable">
             <thead>
@@ -23,7 +23,7 @@
                 </tr>
             </tbody>
         </table>
-        
+
     </div>
 </template>
 <script>
@@ -32,5 +32,4 @@ export default {
 }
 </script>
 <style scoped src="@/assets/css/timetable.css">
-    
 </style>
