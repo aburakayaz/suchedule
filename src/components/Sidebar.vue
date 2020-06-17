@@ -42,13 +42,13 @@
                     </div>
                     <div class="sections">
                         <div class="section-header">Lectures</div>
-                        <div v-for="section in course.classes[0].sections" :key="section.crn" class="section-container" @mouseenter="highlightTable(section)">
+                        <div v-for="section in course.classes[0].sections"  @mouseenter="highlighter" :id="`section_${section.crn}`" :key="section.crn" class="section-container">
                             <div  class="row">
                                 <div class="col-md-9 section-info">
                                     <span class="instructor-title">Instructors</span>
                                     <strong>{{ instructorName(section.instructors) }}</strong>
                                     <div class="section-days">
-                                        <div v-for="(schedule, index) in section.schedule" :key="index"  class="section-day">
+                                        <div v-for="(schedule, index) in section.schedule" :key="index" :data-day="schedule.day" :data-start="schedule.start" :data-duration="schedule.duration"  class="section-day">
                                             <span v-if="schedule.day == 0">Mon </span>
                                             <span v-else-if="schedule.day == 1">Tue </span>
                                             <span v-else-if="schedule.day == 2">Wed </span>
@@ -110,11 +110,6 @@ export default {
         toggleDay(day){
             this.days[day] = !this.days[day];
         },
-        highlightTable(section){
-            for(let i = 0; i < section.schedule.length; i++){
-                store.commit('highlightTable', section);
-            }
-        },
         toggleSections(code, event){
             console.log(event);
             var element = $(`#course_${code}`)
@@ -153,6 +148,19 @@ export default {
         },
         shortenCode(code){
             return code.split(" ")[0]+code.split(" ")[1]
+        },
+        highlighter(event){
+            //var arr = []
+            console.log($("#"+event.target.id+" .section-days > .section-day"))
+            /* .map(section => {
+                var sec = {
+                    day: $(section).data("day"),
+                    start: $(section).data("start"),
+                    duration: $(section).data("duration")
+                }
+                arr.push(sec);
+            }) */
+            //store.commit('highlightTable', arr);
         }
     },
 }

@@ -35,8 +35,8 @@ const store = new Vuex.Store({
     },
     mutations: {
         // to be completed
-        highlightTable(state, section){
-            return section;
+        highlightTable(state, sections){
+            state.highlighted = sections;
         },
         toggleSidebar(state){
             state.sidebar = !state.sidebar;
