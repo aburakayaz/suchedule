@@ -1,5 +1,5 @@
 <template>
-    <div id="timetable" style="height: 100%">
+    <div id="timetable" style="height: 95%">
 
         <table class="timetable">
             <thead>

@@ -1,4 +1,7 @@
 #sidebar {
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
   display: inline-block;
   width: 100%;
   background-color: #f5f5f5;
@@ -6,6 +9,22 @@
   height: 100vh;
   -webkit-transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#sidebar ::-webkit-scrollbar {
+  width: 10px;
+}
+
+#sidebar ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#sidebar ::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+#sidebar ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 #sidebar .search-bar .course-search {
@@ -33,6 +52,7 @@
 }
 
 #sidebar .hide-sidebar {
+  z-index: 5 !important;
   display: inline-block;
   position: absolute;
   right: -4vh;
@@ -84,6 +104,7 @@
 }
 
 #sidebar .courses {
+  width: 49vh;
   max-height: 85vh;
   overflow-y: scroll;
 }
