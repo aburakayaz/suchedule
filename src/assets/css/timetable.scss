@@ -46,6 +46,48 @@
                     }
                 }
                 td{
+                    .section-wrapper{
+                        .course-button{
+                            width: fit-content;
+                            margin: 4px auto;
+                            color: #f5f5f5;
+                            padding: .5vh 1vw;
+                            border-radius: 6px;
+                            &.color-1{
+                                background-color: #1abc9c;
+                            }
+                            &.color-2{
+                                background-color: #2ecc71;
+                            }
+                            &.color-3{
+                                background-color: #1abc9c;
+                            }
+                            &.color-4{
+                                background-color: #3498db;
+                            }
+                            &.color-5{
+                                background-color: #9b59b6;
+                            }
+                            &.color-6{
+                                background-color: #34495e;
+                            }
+                            &.color-7{
+                                background-color: #f1c40f;
+                            }
+                            &.color-8{
+                                background-color: #e67e22;
+                            }
+                            &.color-9{
+                                background-color: #e74c3c;
+                            }
+                            i{
+                                margin-left:1vh;
+                            }
+                            i:hover {
+                                cursor: pointer;
+                            }
+                        }
+                    }
                     white-space: nowrap;
                     &.hour-cell{
                         max-width: max-content;
