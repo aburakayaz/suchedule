@@ -19,7 +19,7 @@
 
                         <span v-for="course in courses" :key="course.code">
                             <div v-for="section in course.sections" :key="section.crn" class="section-wrapper ">
-                                <div v-if="row == section.start && td-1 == section.day" :class="'course-button color-'+ course.color +' text-center'">
+                                <div v-if="row >= section.start && row < section.start + section.duration && td-1 == section.day" :class="'course-button color-'+ course.color +' text-center'">
                                     <div class="row">
                                         <div class="col-md-12">
                                             {{ course.code }} - {{course.group}}
