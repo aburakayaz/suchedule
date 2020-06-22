@@ -3,6 +3,7 @@ const actions = {
     clearSchedule: 'clearActiveSchedule',
     toggleSidebar: 'toggleSidebar',
     highlightTable: 'hightlightTable',
+    toggleAbout: 'toggleAbout',
 }
 
 export default actions;

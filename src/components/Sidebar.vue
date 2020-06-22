@@ -147,11 +147,6 @@ export default {
             activeSchedule: this.$store.state.schedule.activeSchedule,
         }
     },
-    computed: {
-        
-    },
-    mounted(){
-    },
     methods: {
         toggleDay(day){
             this.days[day] = !this.days[day];

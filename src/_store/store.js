@@ -8,7 +8,8 @@ const store = new Vuex.Store({
     state: {
         schedule: data,
         highlighted: [],
-        sidebar: true
+        sidebar: true,
+        about: false
     },
     getters: {
         getAllInstructors: state => {
@@ -54,6 +55,9 @@ const store = new Vuex.Store({
                     i--;
                 }
             }
+        },
+        toggleAbout(state){
+            state.about = !state.about
         }
     }
 })

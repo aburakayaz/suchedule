@@ -21,14 +21,27 @@
   margin: auto 0;
 }
 
-#navbar .nav-links a {
+#navbar .nav-links a, #navbar .nav-links span {
   font-size: 1em;
   margin-left: 2vh;
   color: white;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
 }
 
-#navbar .nav-links a:hover {
+#navbar .nav-links a:hover, #navbar .nav-links span:hover {
   text-decoration: none;
   color: #ddd;
+}
+
+#navbar .about-box {
+  background-color: white;
+  color: #212121;
+  padding: 2vh 1.75vw;
+  border-radius: 6px;
+  margin-bottom: 5px;
 }
 /*# sourceMappingURL=main.css.map */

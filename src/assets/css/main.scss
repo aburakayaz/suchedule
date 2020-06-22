@@ -13,14 +13,23 @@
     .nav-links{
         font-family: 'Noto Sans', sans-serif;
         margin: auto 0;
-        a{
+        a, span{
             font-size: 1em;
             margin-left: 2vh;
             color: white;
+            user-select: none;
+            cursor: pointer;
             &:hover{
                 text-decoration: none;
                 color: #ddd;
             }
         }
+    }
+    .about-box{
+        background-color: white;
+        color: #212121;
+        padding: 2vh 1.75vw;
+        border-radius: 6px;
+        margin-bottom: 5px;
     }
 }
