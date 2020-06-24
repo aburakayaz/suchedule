@@ -9,7 +9,8 @@ const store = new Vuex.Store({
         schedule: data,
         highlighted: [],
         sidebar: true,
-        about: false
+        about: false,
+        notifications: []
     },
     getters: {
         getAllInstructors: state => {
@@ -32,12 +33,18 @@ const store = new Vuex.Store({
         },
         getAllPlaces: state => {
             return state.schedule.allPlaces;
+        },
+        getNotifications(state){
+            return state.notifications;
         }
     },
     mutations: {
         // to be completed
         highlightTable(state, sections){
             state.highlighted = sections;
+        },
+        insertNotification(state, notification){
+            state.notifications.push(notification)
         },
         toggleSidebar(state){
             state.sidebar = !state.sidebar;
@@ -50,9 +57,9 @@ const store = new Vuex.Store({
         },
         removeFromActiveSchedule(state, CRN){
             for(let i = 0; i < state.schedule.activeSchedule.length; i++){
-                if(state.schedule.activeSchedule[i].code === CRN){
+                if(state.schedule.activeSchedule[i].crn === CRN){
                     state.schedule.activeSchedule.splice(i, 1);
-                    i--;
+                    break;
                 }
             }
         },

@@ -32,4 +32,21 @@
         border-radius: 6px;
         margin-bottom: 5px;
     }
+    .notification-center{
+        z-index: 15;
+        position: absolute;
+        text-align: center;
+        width: 20vw;
+        top: 2vh;
+        left: 40%;
+        .notification{
+            padding: 1vh 0;
+            border-radius: 4px;
+
+            color: white;
+            &.danger{
+                background-color: #e74c3c;
+            }
+        }
+    }
 }

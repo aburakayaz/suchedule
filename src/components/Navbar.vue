@@ -19,13 +19,28 @@
                     <div class="col-md-6">
                         <div class="about-box">
                             <h3><strong>SUchedule</strong></h3>
-                            <p>Selamın aleyküm</p>
+                            <p>
+                                I am Burak, a CS student at Sabancı University. I've built this project with the hopes of making the course registration period easier for SU students.
+                            </p>
+                            <p>
+                                Feel free to contact me about your suggestions:
+                            </p>
+                            <p>
+                                bayaz@sabanciuniv.edu
+                            </p>
+                            <p>Support me on Github:</p>
+                            <iframe style="display:inline-block;" src="https://ghbtns.com/github-btn.html?user=aburakayaz&amp;type=follow&amp;count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+                            <iframe src="https://ghbtns.com/github-btn.html?user=aburakayaz&amp;repo=suchedule&amp;type=star&amp;count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
                         </div>
                     </div>
                 </div>
             </transition>
             
-        
+        <div class="notification-center">
+            <div v-for="not in this.$store.getters.getNotifications" :key="not.message" :class="`notification ${not.type} animate__animated animate__fadeInDown`">
+                {{ not.message }}
+            </div>
+        </div>
     </div>
 </template>
 <script>

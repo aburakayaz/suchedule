@@ -136,7 +136,7 @@ export default {
     name: 'Sidebar',
     data() {
         return {
-            isShown: true,
+            isShown: this.$store.getters.sidebarState,
             days: {
                 monday: true,
                 tuesday: true,
@@ -187,6 +187,13 @@ export default {
             }
             return false;
         },
+        insertNotification(type, message){
+            var notification = {
+                type: type,
+                message: message
+            }
+            this.$store.commit('insertNotification', notification);
+        },
         instructorName(id){
             return this.$store.getters.getAllInstructors[id]
         },
@@ -196,27 +203,52 @@ export default {
         shortenCode(code){
             return code.split(" ")[0]+code.split(" ")[1]
         },
-        addToSchedule(e){
-            var course = {
-                code: $($(e.target).parent().parent().parent().parent()).data("code"),
-                crn: $($(e.target).parent().parent().parent().parent()).data("crn"),
-                group: $($(e.target).parent().parent().parent().parent()).data("group"),
-                color: this.getRandomColor(),
-                sections: []
-            }
-            $($(e.target).parent().parent().siblings().children()[2]).children().each(day => {
-                var c = {
-                    day: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("day"),
-                    start: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("start"),
-                    duration: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("duration")
+        isCourseDuplicate(course){
+            for(let c in this.$store.getters.getCurrentCourses){
+                if(c.code == course.code){
+                    this.insertNotification("danger", `You already have another section of <strong>${course.code}</strong>`)
+                    break;
                 }
-                course.sections.push(c);
-                
-            })
-            store.commit('updateActiveSchedule', course);
+            }
+            return true;
         },
-        getRandomColor(){
-            return Math.floor(Math.random() * 9) + 1
+        addToSchedule(e){
+            if($($(e.target).parent().parent().parent().parent()).hasClass("section-selected")){
+                this.$store.commit('removeFromActiveSchedule',$($(e.target).parent().parent().parent().parent()).data("crn"))
+                $($(e.target).parent().parent().parent().parent()).removeClass("section-selected")
+                $(e.target).removeClass("fa-minus").addClass("fa-plus")
+            }
+            else{
+                
+                var course = {
+                    code: $($(e.target).parent().parent().parent().parent()).data("code"),
+                    crn: $($(e.target).parent().parent().parent().parent()).data("crn"),
+                    group: $($(e.target).parent().parent().parent().parent()).data("group"),
+                    color: this.getColorCode(),
+                    sections: []
+                }
+                $(e.target).removeClass("fa-plus").addClass("fa-minus")
+                $($(e.target).parent().parent().parent().parent()).addClass("section-selected")
+                $($(e.target).parent().parent().siblings().children()[2]).children().each(day => {
+                    var c = {
+                        day: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("day"),
+                        start: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("start"),
+                        duration: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("duration")
+                    }
+                    course.sections.push(c);
+                    
+                })
+                store.commit('updateActiveSchedule', course);
+            }
+        },
+        getColorCode(){
+            var code = Math.floor(Math.random() * 9) + 1
+            for(let c in this.$store.getters.getCurrentCourses){
+                if(c.color == code){
+                    this.getColorCode();
+                }
+            }
+            return code;
         },
         highlighter(event){
             //var arr = []

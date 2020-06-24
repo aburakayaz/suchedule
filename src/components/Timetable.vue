@@ -17,13 +17,13 @@
                     <td class="hour-cell">{{ row+8 }}.40</td>
                     <td v-for="td in [1,2,3,4,5]" :key="td">
 
-                        <span v-for="course in courses" :key="course.code">
+                        <span v-for="course in courses" :key="course.code+course.group">
                             <div v-for="section in course.sections" :key="section.crn" class="section-wrapper ">
                                 <div v-if="row >= section.start && row < section.start + section.duration && td-1 == section.day" :class="'course-button color-'+ course.color +' text-center'">
                                     <div class="row">
                                         <div class="col-md-12">
                                             {{ course.code }} - {{course.group}}
-                                            <i style="font-size: .8em;" class="fal fa-times"></i>
+                                            <i @click="removeCourse(course.crn)" style="font-size: .8em;" class="fal fa-times"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -47,7 +47,9 @@ export default {
         }
     },
     methods:{
-        
+        removeCourse(crn){
+            this.$store.commit('removeFromActiveSchedule',crn)
+        }
     }
 }
 </script>

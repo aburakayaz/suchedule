@@ -44,4 +44,23 @@
   border-radius: 6px;
   margin-bottom: 5px;
 }
+
+#navbar .notification-center {
+  z-index: 15;
+  position: absolute;
+  text-align: center;
+  width: 20vw;
+  top: 2vh;
+  left: 40%;
+}
+
+#navbar .notification-center .notification {
+  padding: 1vh 0;
+  border-radius: 4px;
+  color: white;
+}
+
+#navbar .notification-center .notification.danger {
+  background-color: #e74c3c;
+}
 /*# sourceMappingURL=main.css.map */
