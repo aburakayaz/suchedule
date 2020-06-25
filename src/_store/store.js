@@ -38,6 +38,9 @@ const store = new Vuex.Store({
         getNotifications(state){
             return state.notifications;
         },
+        getWSchedule(state){
+            return state.schedule.wizardSchedule.schedule;
+        }
     },
     mutations: {
         // to be completed
@@ -107,6 +110,15 @@ const store = new Vuex.Store({
                 })
             }
         },
+        insertWizardSchedule(state, schedule){
+            state.schedule.wizardSchedule.schedule = schedule;
+        },
+        flushActiveSchedule(state){
+            state.schedule.activeSchedule = [];
+        },
+        flushWizardSchedule(state){
+            state.schedule.wizardSchedule.schedule = [];
+        }
     }
 })
 
