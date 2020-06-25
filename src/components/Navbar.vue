@@ -37,10 +37,11 @@
             </transition>
             
         <div class="notification-center">
-            <div v-for="not in this.$store.getters.getNotifications" :key="not.message" :class="`notification ${not.type} animate__animated animate__fadeInDown`">
-                {{ not.message }}
+            <div  :id="'notification_'+not.id" v-for="not in this.$store.getters.getNotifications" :key="not.message" :class="`notification ${not.type} animate__animated animate__fadeInDown`">
+                <span v-html="not.message"></span>
             </div>
         </div>
+
     </div>
 </template>
 <script>

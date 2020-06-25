@@ -8,8 +8,8 @@
             </div>  
         </div>
         <div class="search-bar">
-            <input type="text" placeholder="Search Course" class="course-search">
-            <select name="" id="" class="filter-search">
+            <input v-model="searchInput" type="text" @keyup="filterCourses" placeholder="Search Course" class="course-search">
+            <select v-model="searchCriteria" name="search_criteria" id="search_criteria" class="filter-search">
                 <option value="0">Course name</option>
                 <option value="1">Instructor</option>
             </select>
@@ -34,11 +34,11 @@
                 <div v-for="course in this.$store.state.schedule.allCourses"  :key="course.code" :id="`course_${shortenCode(course.code)}`"  class="course hide-sections">
                     <div class="header" :data-code="shortenCode(course.code)"  @click="toggleSections(shortenCode(course.code), $event)">
                         <div class="title">
-                        <strong>{{ course.code }}</strong> - {{ course.name }}
-                    </div>
-                    <div class="caret">
-                        <i class="fal fa-angle-right"></i>
-                    </div>
+                            <strong>{{ course.code }}</strong> - {{ course.name }}
+                        </div>
+                        <div class="caret">
+                            <i class="fal fa-angle-right"></i>
+                        </div>
                     </div>
                     <div class="sections">
                         <div class="section-header">Lectures</div>
@@ -136,6 +136,8 @@ export default {
     name: 'Sidebar',
     data() {
         return {
+            searchInput:  "",
+            searchCriteria: 0,
             isShown: this.$store.getters.sidebarState,
             days: {
                 monday: true,
@@ -148,8 +150,29 @@ export default {
         }
     },
     methods: {
+        filterDays(){
+            var aDays = [];
+            for(let i in this.days){
+                if(this.days[i]) continue;
+                else {
+                    let day = 0;
+                    if(i == "tuesday") day = 1;
+                    else if(i == "wednesday") day = 2;
+                    else if(i == "thursday") day = 3;
+                    else if(i == "friday") day = 4;
+                    aDays.push(day);
+                }
+            }
+            return aDays;
+        },
         toggleDay(day){
             this.days[day] = !this.days[day];
+            var aDays = this.filterDays();
+            var payload = {
+                phrase: this.searchInput,
+                days: aDays
+            }
+            this.$store.commit('doSearch', payload);
         },
         toggleSections(code, event){
             console.log(event);
@@ -163,6 +186,16 @@ export default {
                 element.siblings(':not(hide-sections)').addClass('hide-sections');
                 element.addClass('hide-sections') 
                 $(`#course_${code} .caret i`).addClass("fa-angle-right").removeClass("fa-angle-down")   
+            }
+        },
+        filterCourses(){
+            var aDays = this.filterDays();
+            if(this.searchCriteria == 0){
+                var payload = {
+                    phrase: this.searchInput,
+                    days: aDays
+                }
+                this.$store.commit('doSearch', payload);
             }
         },
         toggleSidebar(){
@@ -187,12 +220,19 @@ export default {
             }
             return false;
         },
+        getRandomNotificationId(){
+            return Math.floor(Math.random() * 20) + 1;
+        },
         insertNotification(type, message){
             var notification = {
+                id: this.getRandomNotificationId(),
                 type: type,
                 message: message
             }
             this.$store.commit('insertNotification', notification);
+            setTimeout(() => {
+                this.$store.commit('removeNotification', notification.id);
+            }, 4000);
         },
         instructorName(id){
             return this.$store.getters.getAllInstructors[id]
@@ -204,13 +244,14 @@ export default {
             return code.split(" ")[0]+code.split(" ")[1]
         },
         isCourseDuplicate(course){
-            for(let c in this.$store.getters.getCurrentCourses){
-                if(c.code == course.code){
+            
+            for(var c in this.$store.getters.getCurrentCourses){
+                if(this.$store.getters.getCurrentCourses[c].code == course.code){
                     this.insertNotification("danger", `You already have another section of <strong>${course.code}</strong>`)
-                    break;
+                    return true;
                 }
             }
-            return true;
+            return false;
         },
         addToSchedule(e){
             if($($(e.target).parent().parent().parent().parent()).hasClass("section-selected")){
@@ -219,7 +260,6 @@ export default {
                 $(e.target).removeClass("fa-minus").addClass("fa-plus")
             }
             else{
-                
                 var course = {
                     code: $($(e.target).parent().parent().parent().parent()).data("code"),
                     crn: $($(e.target).parent().parent().parent().parent()).data("crn"),
@@ -227,18 +267,27 @@ export default {
                     color: this.getColorCode(),
                     sections: []
                 }
-                $(e.target).removeClass("fa-plus").addClass("fa-minus")
-                $($(e.target).parent().parent().parent().parent()).addClass("section-selected")
-                $($(e.target).parent().parent().siblings().children()[2]).children().each(day => {
-                    var c = {
-                        day: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("day"),
-                        start: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("start"),
-                        duration: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("duration")
-                    }
-                    course.sections.push(c);
-                    
-                })
-                store.commit('updateActiveSchedule', course);
+
+                if(!this.isCourseDuplicate(course)){
+
+
+                    $(e.target).removeClass("fa-plus").addClass("fa-minus")
+                    $($(e.target).parent().parent().parent().parent()).addClass("section-selected")
+                    $($(e.target).parent().parent().siblings().children()[2]).children().each(day => {
+                        var c = {
+                            day: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("day"),
+                            start: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("start"),
+                            duration: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("duration")
+                        }
+                        course.sections.push(c);
+                        
+                    })
+                    store.commit('updateActiveSchedule', course);
+
+
+                }
+                
+                
             }
         },
         getColorCode(){
