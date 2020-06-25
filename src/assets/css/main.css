@@ -63,4 +63,8 @@
 #navbar .notification-center .notification.danger {
   background-color: #e74c3c;
 }
+
+#navbar .notification-center .notification.success {
+  background-color: #2ecc71;
+}
 /*# sourceMappingURL=main.css.map */

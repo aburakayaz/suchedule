@@ -8,7 +8,7 @@
                 <span @click="toggleAbout"><i class="fas fa-question"></i> About</span>
                 <router-link to="/wizard"><i class="fas fa-hat-wizard"></i> Wizard</router-link>
                 
-                <router-link to="#"><i class="fas fa-trash"></i> Clear</router-link> 
+                <span @click="flushTables"><i class="fas fa-trash"></i> Clear</span> 
                 <router-link to="#"><i class="fas fa-clipboard"></i> Copy CRN</router-link> 
                 <router-link to="#"><i class="fas fa-calendar-star"></i> Add to Calendar</router-link>
             </div>
@@ -54,7 +54,26 @@ export default {
         },
         toggleAbout(){
             store.commit('toggleAbout');
-        }
+        },
+        flushTables(){
+            store.commit('clearSchedule');
+            store.commit('flushWizardSchedule');
+            var notification = {
+                id: this.getRandomNotificationId(),
+                type: 'success',
+                message: 'Cleared all schedules!'
+            }
+            this.newNotification(notification);
+        },
+        newNotification(payload){
+            this.$store.commit('insertNotification', payload);
+            setTimeout(() => {
+                this.$store.commit('removeNotification', payload.id);
+            }, 4000);
+        },
+        getRandomNotificationId(){
+            return Math.floor(Math.random() * 20) + 1;
+        },
     }
 }
 </script>
