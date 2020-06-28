@@ -77,29 +77,24 @@ const store = new Vuex.Store({
         toggleAbout(state){
             state.about = !state.about
         },
-        doSearch(state, payload){
+        doSearch(state, {phrase, filteredDays}){
             state.schedule.allCourses = state.baseCourses;
 
-            var phrase = payload.phrase;
-            var filteredDays = payload.days;
-
-            if(filteredDays.length != 0){
-                filteredDays.forEach(fDay => {
-                    
-                    state.schedule.allCourses = state.schedule.allCourses.filter(c => {
-                        c.classes.forEach(classes => {
-                            
-                            classes.sections.forEach(section => {
-                                section.schedule.forEach(time => {
-                                    return time.day !== fDay
-                                })
-                            })
-                        })
-                    })
-                })
+            if(filteredDays.length !== 0){
+                state.schedule.allCourses = state.schedule.allCourses.forEach(course => {
+                    course.classes.forEach(_class => {
+                        _class.sections.filter(section => {
+                            let flag = true;
+                            section.schedule.forEach(time => {
+                                flag = flag && (filteredDays.indexOf(time.day) !== -1);
+                            });
+                            return flag;
+                        });
+                    });
+                });
             }
 
-            if(phrase.length != 0){
+            if(phrase.length !== 0){
                 //TODO works too slow
                 state.schedule.allCourses = state.schedule.allCourses.filter((c) => {
                     let coursename = (c.code+" "+c.name).toLowerCase();
@@ -118,6 +113,11 @@ const store = new Vuex.Store({
         },
         flushWizardSchedule(state){
             state.schedule.wizardSchedule.schedule = [];
+        }
+    },
+    actions: {
+        increment (context) {
+            context.commit('increment')
         }
     }
 })

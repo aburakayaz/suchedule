@@ -1,11 +1,11 @@
 <template>
-    <div id="sidebar">
+    <div id="sidebar" ref="sidebar">
         <div class="row">
             <div class="col-md-2 offset-md-10">
                 <div class="hide-sidebar"  style="margin-top: 45vh;" @click="toggleSidebar">
                     <i id="sidebarToggler" class="fas fa-angle-left"></i>
                 </div>
-            </div>  
+            </div>
         </div>
         <div class="search-bar">
             <input v-model="searchInput" type="text" @keyup="filterCourses" placeholder="Search Course" class="course-search">
@@ -82,13 +82,18 @@
                         </div>
                         <div v-if="course.classes[1]">
                             <div  class="section-header">Recitations</div>
-                        <div  v-for="section in course.classes[1].sections"   @mouseenter="highlighter" :data-group="section.group" :data-code="course.code+'R'" :data-crn="section.crn" :id="`section_${section.crn}`" :key="section.crn" class="section-container">
+                        <div  v-for="section in course.classes[1].sections"
+                              @mouseenter="highlighter" :data-group="section.group" :data-code="course.code+'R'"
+                              :data-crn="section.crn" :id="`section_${section.crn}`" :key="section.crn"
+                              class="section-container">
                             <div class="row">
                                 <div class="col-md-9 section-info">
                                     <span class="instructor-title">Instructors</span>
                                     <strong>{{ instructorName(section.instructors) }}</strong>
                                     <div class="section-days">
-                                        <div v-for="(schedule, index) in section.schedule" :key="index" :data-day="schedule.day" :data-start="schedule.start" :data-duration="schedule.duration"  class="section-day">
+                                        <div v-for="(schedule, index) in section.schedule" :key="index"
+                                             :data-day="schedule.day" :data-start="schedule.start"
+                                             :data-duration="schedule.duration"  class="section-day">
                                             <span v-if="schedule.day == 0">Mon </span>
                                             <span v-else-if="schedule.day == 1">Tue </span>
                                             <span v-else-if="schedule.day == 2">Wed </span>
@@ -114,7 +119,7 @@
                                     <span v-if="isCourseSelected(section.crn)" class="section-select">
                                         <i class="far fa-minus"></i>
                                     </span>
-                                    <span v-else @click="addToSchedule" class="section-select">
+                                    <span v-else @click="addToSchedule(section.crn)" class="section-select">
                                         <i class="far fa-plus"></i>
                                     </span>
                                 </div>
@@ -122,7 +127,7 @@
                         </div>
                         </div>
                     </div>
-                    
+
                 </div>
 
             </div>
@@ -130,7 +135,6 @@
     </div>
 </template>
 <script>
-import store from '../_store/store';
 import $ from 'jquery';
 export default {
     name: 'Sidebar',
@@ -146,7 +150,11 @@ export default {
                 thursday: true,
                 friday: true
             },
-            activeSchedule: this.$store.state.schedule.activeSchedule,
+        }
+    },
+    computed: {
+        activeSchedule() {
+            return this.$store.state.schedule.activeSchedule;
         }
     },
     methods: {
@@ -184,8 +192,8 @@ export default {
             }
             else{
                 element.siblings(':not(hide-sections)').addClass('hide-sections');
-                element.addClass('hide-sections') 
-                $(`#course_${code} .caret i`).addClass("fa-angle-right").removeClass("fa-angle-down")   
+                element.addClass('hide-sections')
+                $(`#course_${code} .caret i`).addClass("fa-angle-right").removeClass("fa-angle-down")
             }
         },
         filterCourses(){
@@ -201,18 +209,18 @@ export default {
         toggleSidebar(){
             if(this.isShown){
                 this.isShown = false;
-                document.getElementById('sidebar').style.marginLeft = "-49vh";
+                this.$refs.sidebar.style.marginLeft = "-49vh";
                 document.getElementById('sidebarToggler').classList.remove('fa-angle-left');
                 document.getElementById('sidebarToggler').classList.add('fa-angle-right');
-                store.commit('toggleSidebar')
+                this.$store.commit('toggleSidebar')
             }
             else{
                 this.isShown = true;
-                document.getElementById('sidebar').style.marginLeft = "0";
+                this.$refs.sidebar.style.marginLeft = 0;
                 document.getElementById('sidebarToggler').classList.remove('fa-angle-right');
                 document.getElementById('sidebarToggler').classList.add('fa-angle-left');
-                store.commit('toggleSidebar')
-            } 
+                this.$store.commit('toggleSidebar')
+            }
         },
         isCourseSelected(crn){
             for(let course in this.activeSchedule){
@@ -244,7 +252,6 @@ export default {
             return code.split(" ")[0]+code.split(" ")[1]
         },
         isCourseDuplicate(course){
-            
             for(var c in this.$store.getters.getCurrentCourses){
                 if(this.$store.getters.getCurrentCourses[c].code == course.code){
                     this.insertNotification("danger", `You already have another section of <strong>${course.code}</strong>`)
@@ -253,9 +260,9 @@ export default {
             }
             return false;
         },
-        addToSchedule(e){
+        addToSchedule(crn, e){
             if($($(e.target).parent().parent().parent().parent()).hasClass("section-selected")){
-                this.$store.commit('removeFromActiveSchedule',$($(e.target).parent().parent().parent().parent()).data("crn"))
+                this.$store.commit('removeFromActiveSchedule', crn);
                 $($(e.target).parent().parent().parent().parent()).removeClass("section-selected")
                 $(e.target).removeClass("fa-minus").addClass("fa-plus")
             }
@@ -280,14 +287,14 @@ export default {
                             duration: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("duration")
                         }
                         course.sections.push(c);
-                        
+
                     })
-                    store.commit('updateActiveSchedule', course);
+                    this.$store.commit('updateActiveSchedule', course);
 
 
                 }
-                
-                
+
+
             }
         },
         getColorCode(){
@@ -310,11 +317,11 @@ export default {
                 }
                 arr.push(sec);
             }) */
-            //store.commit('highlightTable', arr);
+            //this.$store.commit('highlightTable', arr);
         }
     },
 }
 </script>
 <style scoped src="@/assets/css/sidebar.css">
-    
+
 </style>
