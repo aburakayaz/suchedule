@@ -46,6 +46,10 @@
                     }
                 }
                 td{
+                    &.highlighted:nth-of-type(n){
+                        border: .3px solid rgba(0,0,0,.1);
+                        background-color: rgba(254,202,87,.4) !important;
+                    }
                     .section-wrapper{
                         .course-button{
                             width: fit-content;

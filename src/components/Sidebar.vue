@@ -42,7 +42,7 @@
                     </div>
                     <div class="sections">
                         <div class="section-header">Lectures</div>
-                        <div v-for="section in course.classes[0].sections"   @mouseenter="highlighter" :data-group="section.group" :data-code="course.code" :data-crn="section.crn" :id="`section_${section.crn}`" :key="section.crn" class="section-container">
+                        <div v-for="section in course.classes[0].sections" @mouseenter="highlighter(section.crn)" @mouseleave="deHighlighter" :data-group="section.group" :data-code="course.code" :data-crn="section.crn" :id="`section_${section.crn}`" :key="section.crn" class="section-container">
                             <div class="row">
                                 <div class="col-md-9 section-info">
                                     <span class="instructor-title">Instructors</span>
@@ -83,7 +83,7 @@
                         <div v-if="course.classes[1]">
                             <div class="section-header"><span v-if="course.code.includes('SPS')">Discussions</span> <span v-else>Recitations</span></div>
                         <div  v-for="section in course.classes[1].sections"
-                              @mouseenter="highlighter" :data-group="section.group" :data-code="course.code+'R'"
+                              @mouseenter="highlighter(section.crn)" @mouseleave="deHighlighter" :data-group="section.group" :data-code="course.code+'R'"
                               :data-crn="section.crn" :id="`section_${section.crn}`" :key="section.crn"
                               class="section-container">
                             <div class="row">
@@ -285,24 +285,21 @@ export default {
         getColorCode(){
             let code = Math.floor(Math.random() * 9) + 1
             for(let c in this.$store.getters.getCurrentCourses){
-                if(c.color === code){
+                if(this.$store.getters.getCurrentCourses[c].color === code){
                     this.getColorCode();
                 }
             }
             return code;
         },
-        highlighter(event){
-            //var arr = []
-            console.log($("#"+event.target.id+" .section-days > .section-day"))
-            /* .map(section => {
-                var sec = {
-                    day: $(section).data("day"),
-                    start: $(section).data("start"),
-                    duration: $(section).data("duration")
-                }
-                arr.push(sec);
-            }) */
-            //this.$store.commit('highlightTable', arr);
+        highlighter(crn){
+            if(!this.courseSelected(crn)){
+                let course = this.$store.getters.getSectionByCRN(crn);
+                this.$store.commit('highlightTable', course.section.schedule);
+            }
+
+        },
+        deHighlighter(){
+            this.$store.commit('deHighlightTable');
         }
     },
 }

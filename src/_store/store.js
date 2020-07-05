@@ -90,12 +90,53 @@ const store = new Vuex.Store({
             else{
                 return false;
             }
+        },
+        isLectureRequired: state => CRN => {
+            let course;
+            for(let i = 0; i < state.baseCourses.length; i++){
+                for(let j = 0; j < state.baseCourses[i].classes.length; j++){
+                    for(let k = 0; k < state.baseCourses[i].classes[j].sections.length; k++){
+                        if(state.baseCourses[i].classes[j].sections[k].crn === CRN) {
+                            course = {
+                                course: state.baseCourses[i],
+                                group: state.baseCourses[i].classes[j].sections[k].group,
+                                section: state.baseCourses[i].classes[j].sections[k]
+                            };
+
+                        }
+                    }
+                }
+            }
+            if(course.course.classes.length > 1){
+                for(let i = 0; i < state.schedule.activeSchedule.length; i++){
+                    if(state.schedule.activeSchedule[i].code === course.course.code && state.schedule.activeSchedule[i].type === "L"){
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else{
+                return false;
+            }
+        },
+        isHighlighted: state => (row, col) => {
+
+            for(let i = 0; i < state.highlighted.length; i++){
+                if(state.highlighted[i].day === col-1 && state.highlighted[i].start <= row && state.highlighted[i].start + state.highlighted[i].duration > row){
+                    console.log(row, col);
+                    return true;
+                }
+            }
+            return false;
         }
     },
     mutations: {
         // to be completed
         highlightTable(state, sections){
             state.highlighted = sections;
+        },
+        deHighlightTable(state){
+            state.highlighted = [];
         },
         insertNotification(state, notification){
             state.notifications.push(notification)

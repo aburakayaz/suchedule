@@ -3,112 +3,88 @@
   width: 100%;
   height: 100%;
 }
-
 #timetable table.timetable thead tr th {
   text-align: center;
   color: white;
   max-width: 20vw;
 }
-
 #timetable table.timetable thead tr th:nth-child(odd) {
   background-color: #3498db;
 }
-
 #timetable table.timetable thead tr th:nth-child(even) {
   background-color: #2980b9;
 }
-
 #timetable table.timetable thead tr th.hour-cell {
   width: 50px;
 }
-
 #timetable table.timetable tbody tr {
   display: table-row;
-  height: -webkit-max-content;
-  height: -moz-max-content;
   height: max-content;
 }
-
 #timetable table.timetable tbody tr:nth-child(odd) td:nth-child(2n+1) {
   background-color: #ecf0f1;
 }
-
 #timetable table.timetable tbody tr:nth-child(odd) td:nth-child(2n) {
   background-color: #bdc3c7;
 }
-
 #timetable table.timetable tbody tr:nth-child(even) td:nth-child(2n+1) {
   background-color: #B1BDBE;
 }
-
 #timetable table.timetable tbody tr:nth-child(even) td:nth-child(2n) {
   background-color: #9EA8A9;
 }
-
 #timetable table.timetable tbody tr td {
   white-space: nowrap;
 }
-
+#timetable table.timetable tbody tr td.highlighted:nth-of-type(n) {
+  border: 0.3px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(254, 202, 87, 0.4) !important;
+}
 #timetable table.timetable tbody tr td .section-wrapper .course-button {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
   margin: 4px auto;
   color: #f5f5f5;
-  padding: .5vh 1vw;
+  padding: 0.5vh 1vw;
   border-radius: 6px;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-1 {
   background-color: #1abc9c;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-2 {
   background-color: #2ecc71;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-3 {
   background-color: #1abc9c;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-4 {
   background-color: #3498db;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-5 {
   background-color: #9b59b6;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-6 {
   background-color: #34495e;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-7 {
   background-color: #f1c40f;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-8 {
   background-color: #e67e22;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button.color-9 {
   background-color: #e74c3c;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button i {
   margin-left: 1vh;
 }
-
 #timetable table.timetable tbody tr td .section-wrapper .course-button i:hover {
   cursor: pointer;
 }
-
 #timetable table.timetable tbody tr td.hour-cell {
-  max-width: -webkit-max-content;
-  max-width: -moz-max-content;
   max-width: max-content;
   background-color: #f5f5f5;
   font-weight: bold;
   text-align: center;
 }
+
 /*# sourceMappingURL=timetable.css.map */

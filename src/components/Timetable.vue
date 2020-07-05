@@ -15,17 +15,22 @@
             <tbody id="rows">
             <tr v-for="row in [0,1,2,3,4,5,6,7,8,9,10]" :key="row">
                 <td class="hour-cell">{{ row+8 }}.40</td>
-                <td v-for="td in [1,2,3,4,5]" :key="td">
+                <td :class="{'highlighted': $store.getters.isHighlighted(row, td)}" :key="td" v-for="td in [1,2,3,4,5]">
                     <template v-if="courses.length > 0">
-                            <span v-for="course in courses" :key="course.code+course.group+getRandom">
+                            <span v-for="course in courses" :key="course.code+course.group+getRandom().toString()">
                                 <div v-for="section in course.sections" :key="section.crn" class="section-wrapper ">
-                                    <div v-if="row >= section.start && row < section.start + section.duration && td-1 == section.day"
+                                    <div v-if="row >= section.start && row < section.start + section.duration && td-1 === section.day"
                                          :class="'course-button color-'+ course.color +' text-center'">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <span v-show="course.type === 'L'">
                                                     <span v-show="$store.getters.isRecitationRequired(course.crn)">
                                                         <i class="fas fa-exclamation-triangle" title="Recitation is required for this course"></i>
+                                                    </span>
+                                                </span>
+                                                <span v-show="course.type === 'R'">
+                                                    <span v-show="$store.getters.isLectureRequired(course.crn)">
+                                                        <i class="fas fa-exclamation-triangle" title="Lecture is required for this course"></i>
                                                     </span>
                                                 </span>
                                                 {{ course.code + (course.type === "R" ? "R" : "") }} - {{ course.group }}
@@ -58,7 +63,7 @@
         },
         methods: {
             getRandom(){
-              return Math.floor(Math.random * 100) +1;
+              return Math.floor(Math.random() * 1000) +1;
             },
             removeCourse(crn) {
                 this.$store.commit('removeFromActiveSchedule', crn)
