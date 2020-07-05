@@ -11,7 +11,8 @@ const store = new Vuex.Store({
         sidebar: true,
         about: false,
         notifications: [],
-        baseCourses: data.allCourses
+        baseCourses: data.allCourses,
+        baseInstructors: data.allInstructors
     },
     getters: {
         getAllInstructors: state => {
@@ -40,6 +41,55 @@ const store = new Vuex.Store({
         },
         getWSchedule(state){
             return state.schedule.wizardSchedule.schedule;
+        },
+        isCourseSelected: state => CRN => {
+            for(let course in state.schedule.activeSchedule){
+                if(state.schedule.activeSchedule[course].crn === CRN) return true;
+            }
+        },
+        getSectionByCRN: state => CRN => {
+            for(let i = 0; i < state.baseCourses.length; i++){
+                for(let j = 0; j < state.baseCourses[i].classes.length; j++){
+                    for(let k = 0; k < state.baseCourses[i].classes[j].sections.length; k++){
+                        if(state.baseCourses[i].classes[j].sections[k].crn === CRN) {
+                            return {
+                                course: state.baseCourses[i],
+                                group: state.baseCourses[i].classes[j].sections[k].group,
+                                section: state.baseCourses[i].classes[j].sections[k]
+                            };
+
+                        }
+                    }
+                }
+            }
+        },
+        isRecitationRequired: state => CRN => {
+            let course;
+            for(let i = 0; i < state.baseCourses.length; i++){
+                for(let j = 0; j < state.baseCourses[i].classes.length; j++){
+                    for(let k = 0; k < state.baseCourses[i].classes[j].sections.length; k++){
+                        if(state.baseCourses[i].classes[j].sections[k].crn === CRN) {
+                            course = {
+                                course: state.baseCourses[i],
+                                group: state.baseCourses[i].classes[j].sections[k].group,
+                                section: state.baseCourses[i].classes[j].sections[k]
+                            };
+
+                        }
+                    }
+                }
+            }
+            if(course.course.classes.length > 1){
+                for(let i = 0; i < state.schedule.activeSchedule.length; i++){
+                    if(state.schedule.activeSchedule[i].code === course.course.code && state.schedule.activeSchedule[i].type === "R"){
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else{
+                return false;
+            }
         }
     },
     mutations: {
@@ -52,10 +102,14 @@ const store = new Vuex.Store({
         },
         removeNotification(state, id){
             for(let i = 0; i < state.notifications.length; i++){
-                if(state.notifications[i].id == id){
+                if(state.notifications[i].id === id){
                     state.notifications.splice(i,1);
                 }
             }
+        },
+        importWizardToActive(state, courses){
+            console.log(courses);
+            state.schedule.activeSchedule = courses;
         },
         toggleSidebar(state){
             state.sidebar = !state.sidebar;
@@ -77,9 +131,9 @@ const store = new Vuex.Store({
         toggleAbout(state){
             state.about = !state.about
         },
-        doSearch(state, {phrase, filteredDays}){
+        doSearch(state, {phrase, type, filteredDays}){
             state.schedule.allCourses = state.baseCourses;
-
+            state.schedule.allInstructors = state.baseInstructors;
             if(filteredDays.length !== 0){
                 state.schedule.allCourses = state.schedule.allCourses.forEach(course => {
                     course.classes.forEach(_class => {
@@ -93,16 +147,29 @@ const store = new Vuex.Store({
                     });
                 });
             }
-
             if(phrase.length !== 0){
-                //TODO works too slow
-                state.schedule.allCourses = state.schedule.allCourses.filter((c) => {
-                    let coursename = (c.code+" "+c.name).toLowerCase();
-                    phrase = phrase.toLowerCase();
-                    console.log(phrase, coursename, coursename.includes(phrase))
-                    if(coursename.includes(phrase)) return true;
-                    else return false;
-                })
+                if(type === 0){
+                    //TODO works too slow
+                    state.schedule.allCourses = state.schedule.allCourses.filter((c) => {
+                        let classname = (c.code+" "+c.name).toLowerCase();
+                        phrase = phrase.toLowerCase();
+                        return classname.includes(phrase);
+                    })
+                }
+                else{
+                    state.schedule.allInstructors = state.baseInstructors.filter(ins => {
+                        return ins.includes(phrase);
+                    });
+                    state.schedule.allCourses = state.schedule.allCourses.filter(c => {
+
+                        for(let i = 0; i < c.classes.length; i++){
+                            for(let j = 0; j < c.classes[i].sections.length; j++){
+                                console.log(state.schedule.allInstructors.includes(c.classes[i].sections[j].instructors));
+                                return state.schedule.allInstructors.includes(c.classes[i].sections[j].instructors);
+                            }
+                        }
+                    })
+                }
             }
         },
         insertWizardSchedule(state, schedule){
@@ -116,9 +183,6 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        increment (context) {
-            context.commit('increment')
-        }
     }
 })
 

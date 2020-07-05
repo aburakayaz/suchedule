@@ -49,11 +49,11 @@
                                     <strong>{{ instructorName(section.instructors) }}</strong>
                                     <div class="section-days">
                                         <div v-for="(schedule, index) in section.schedule" :key="index" :data-day="schedule.day" :data-start="schedule.start" :data-duration="schedule.duration"  class="section-day">
-                                            <span v-if="schedule.day == 0">Mon </span>
-                                            <span v-else-if="schedule.day == 1">Tue </span>
-                                            <span v-else-if="schedule.day == 2">Wed </span>
-                                            <span v-else-if="schedule.day == 3">Thu </span>
-                                            <span v-else-if="schedule.day == 4">Fri </span>
+                                            <span v-if="schedule.day === 0">Mon </span>
+                                            <span v-else-if="schedule.day === 1">Tue </span>
+                                            <span v-else-if="schedule.day === 2">Wed </span>
+                                            <span v-else-if="schedule.day === 3">Thu </span>
+                                            <span v-else-if="schedule.day === 4">Fri </span>
                                             &nbsp;
                                             <span>{{ schedule.start+8 }}.40 - {{ schedule.start+8+schedule.duration }}.40 </span>
                                             &nbsp;
@@ -71,17 +71,17 @@
                                 </div>
 
                                 <div class="col-md-3 text-right">
-                                    <span v-if="isCourseSelected(section.crn)" class="section-select">
+                                    <span @click="addToSchedule(section.crn)" v-if="courseSelected(section.crn)" class="section-select">
                                         <i class="far fa-minus"></i>
                                     </span>
-                                    <span v-else @click="addToSchedule" class="section-select">
+                                    <span v-else @click="addToSchedule(section.crn)" class="section-select">
                                         <i class="far fa-plus"></i>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div v-if="course.classes[1]">
-                            <div  class="section-header">Recitations</div>
+                            <div class="section-header"><span v-if="course.code.includes('SPS')">Discussions</span> <span v-else>Recitations</span></div>
                         <div  v-for="section in course.classes[1].sections"
                               @mouseenter="highlighter" :data-group="section.group" :data-code="course.code+'R'"
                               :data-crn="section.crn" :id="`section_${section.crn}`" :key="section.crn"
@@ -94,11 +94,11 @@
                                         <div v-for="(schedule, index) in section.schedule" :key="index"
                                              :data-day="schedule.day" :data-start="schedule.start"
                                              :data-duration="schedule.duration"  class="section-day">
-                                            <span v-if="schedule.day == 0">Mon </span>
-                                            <span v-else-if="schedule.day == 1">Tue </span>
-                                            <span v-else-if="schedule.day == 2">Wed </span>
-                                            <span v-else-if="schedule.day == 3">Thu </span>
-                                            <span v-else-if="schedule.day == 4">Fri </span>
+                                            <span v-if="schedule.day === 0">Mon </span>
+                                            <span v-else-if="schedule.day === 1">Tue </span>
+                                            <span v-else-if="schedule.day === 2">Wed </span>
+                                            <span v-else-if="schedule.day === 3">Thu </span>
+                                            <span v-else-if="schedule.day === 4">Fri </span>
                                             &nbsp;
                                             <span>{{ schedule.start+8 }}.40 - {{ schedule.start+8+schedule.duration }}.40 </span>
                                             &nbsp;
@@ -115,11 +115,11 @@
                                     </span>
                                 </div>
 
-                                <div class="col-md-3 text-right">
-                                    <span v-if="isCourseSelected(section.crn)" class="section-select">
+                                <div class="col-md-3 text-right" >
+                                    <span @click="addToSchedule(section.crn, 'R')" v-if="courseSelected(section.crn)" class="section-select">
                                         <i class="far fa-minus"></i>
                                     </span>
-                                    <span v-else @click="addToSchedule(section.crn)" class="section-select">
+                                    <span v-else @click="addToSchedule(section.crn, 'R')" class="section-select">
                                         <i class="far fa-plus"></i>
                                     </span>
                                 </div>
@@ -155,19 +155,23 @@ export default {
     computed: {
         activeSchedule() {
             return this.$store.state.schedule.activeSchedule;
+        },
+        courseSelected(){
+            return function(crn) {
+                return this.$store.getters.isCourseSelected(crn);
+            }
         }
     },
     methods: {
         filterDays(){
-            var aDays = [];
+            let aDays = [];
             for(let i in this.days){
-                if(this.days[i]) continue;
-                else {
+                if(!this.days[i]){
                     let day = 0;
-                    if(i == "tuesday") day = 1;
-                    else if(i == "wednesday") day = 2;
-                    else if(i == "thursday") day = 3;
-                    else if(i == "friday") day = 4;
+                    if(i === "tuesday") day = 1;
+                    else if(i === "wednesday") day = 2;
+                    else if(i === "thursday") day = 3;
+                    else if(i === "friday") day = 4;
                     aDays.push(day);
                 }
             }
@@ -175,8 +179,8 @@ export default {
         },
         toggleDay(day){
             this.days[day] = !this.days[day];
-            var aDays = this.filterDays();
-            var payload = {
+            let aDays = this.filterDays();
+            let payload = {
                 phrase: this.searchInput,
                 days: aDays
             }
@@ -184,7 +188,7 @@ export default {
         },
         toggleSections(code, event){
             console.log(event);
-            var element = $(`#course_${code}`)
+            let element = $(`#course_${code}`)
             if(element.hasClass('hide-sections')){
                 $(element).siblings(':not(hide-sections)').addClass('hide-sections');
                 element.removeClass('hide-sections')
@@ -197,42 +201,38 @@ export default {
             }
         },
         filterCourses(){
-            var aDays = this.filterDays();
-            if(this.searchCriteria == 0){
-                var payload = {
-                    phrase: this.searchInput,
-                    days: aDays
-                }
-                this.$store.commit('doSearch', payload);
+            let aDays = this.filterDays();
+            let payload = {
+                phrase: this.searchInput,
+                type: this.searchCriteria,
+                filteredDays: aDays
             }
+            this.$store.commit('doSearch', payload);
         },
         toggleSidebar(){
             if(this.isShown){
                 this.isShown = false;
                 this.$refs.sidebar.style.marginLeft = "-49vh";
-                document.getElementById('sidebarToggler').classList.remove('fa-angle-left');
-                document.getElementById('sidebarToggler').classList.add('fa-angle-right');
+                this.$refs.sidebar.classList.remove('fa-angle-left');
+                this.$refs.sidebar.classList.add('fa-angle-right');
                 this.$store.commit('toggleSidebar')
             }
             else{
                 this.isShown = true;
-                this.$refs.sidebar.style.marginLeft = 0;
-                document.getElementById('sidebarToggler').classList.remove('fa-angle-right');
-                document.getElementById('sidebarToggler').classList.add('fa-angle-left');
+                this.$refs.sidebar.style.marginLeft = "0";
+                this.$refs.sidebar.classList.remove('fa-angle-right');
+                this.$refs.sidebar.classList.add('fa-angle-left');
                 this.$store.commit('toggleSidebar')
             }
         },
         isCourseSelected(crn){
-            for(let course in this.activeSchedule){
-                if(course.crn == crn) return true;
-            }
-            return false;
+            return this.$store.getters.isCourseSelected(crn);
         },
         getRandomNotificationId(){
             return Math.floor(Math.random() * 20) + 1;
         },
         insertNotification(type, message){
-            var notification = {
+            let notification = {
                 id: this.getRandomNotificationId(),
                 type: type,
                 message: message
@@ -243,7 +243,7 @@ export default {
             }, 4000);
         },
         instructorName(id){
-            return this.$store.getters.getAllInstructors[id]
+            return this.$store.state.baseInstructors[id]
         },
         getPlace(id){
             return this.$store.getters.getAllPlaces[id];
@@ -251,56 +251,41 @@ export default {
         shortenCode(code){
             return code.split(" ")[0]+code.split(" ")[1]
         },
-        isCourseDuplicate(course){
-            for(var c in this.$store.getters.getCurrentCourses){
-                if(this.$store.getters.getCurrentCourses[c].code == course.code){
-                    this.insertNotification("danger", `You already have another section of <strong>${course.code}</strong>`)
+        isCourseDuplicate(code){
+            for(let c in this.$store.getters.getCurrentCourses){
+                if(this.$store.getters.getCurrentCourses[c].code === code){
+                    this.insertNotification("danger", `You already have another section of <strong>${code}</strong>`)
                     return true;
                 }
             }
             return false;
         },
-        addToSchedule(crn, e){
-            if($($(e.target).parent().parent().parent().parent()).hasClass("section-selected")){
+        addToSchedule(crn, type = "L") {
+            let activeCourse = this.$store.getters.getSectionByCRN(crn);
+            if(this.$store.getters.isCourseSelected(crn)){
                 this.$store.commit('removeFromActiveSchedule', crn);
-                $($(e.target).parent().parent().parent().parent()).removeClass("section-selected")
-                $(e.target).removeClass("fa-minus").addClass("fa-plus")
+                //$($(e.target).parent().parent().parent().parent()).removeClass("section-selected")
+                //$(e.target).removeClass("fa-minus").addClass("fa-plus")
             }
             else{
-                var course = {
-                    code: $($(e.target).parent().parent().parent().parent()).data("code"),
-                    crn: $($(e.target).parent().parent().parent().parent()).data("crn"),
-                    group: $($(e.target).parent().parent().parent().parent()).data("group"),
+                let course = {
+                    code: activeCourse.course.code,
+                    crn: activeCourse.section.crn,
+                    group: activeCourse.group,
                     color: this.getColorCode(),
-                    sections: []
+                    type: type,
+                    sections: activeCourse.section.schedule
                 }
-
-                if(!this.isCourseDuplicate(course)){
-
-
-                    $(e.target).removeClass("fa-plus").addClass("fa-minus")
-                    $($(e.target).parent().parent().parent().parent()).addClass("section-selected")
-                    $($(e.target).parent().parent().siblings().children()[2]).children().each(day => {
-                        var c = {
-                            day: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("day"),
-                            start: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("start"),
-                            duration: $($($(e.target).parent().parent().siblings().children()[2]).children()[day]).data("duration")
-                        }
-                        course.sections.push(c);
-
-                    })
-                    this.$store.commit('updateActiveSchedule', course);
-
-
-                }
+                // duplicate course olup olmadığını kontrol etmek istersek: this.isCourseDuplicate(activeCourse.section.crn)
+                this.$store.commit('updateActiveSchedule', course);
 
 
             }
         },
         getColorCode(){
-            var code = Math.floor(Math.random() * 9) + 1
+            let code = Math.floor(Math.random() * 9) + 1
             for(let c in this.$store.getters.getCurrentCourses){
-                if(c.color == code){
+                if(c.color === code){
                     this.getColorCode();
                 }
             }
