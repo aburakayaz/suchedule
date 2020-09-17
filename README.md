@@ -1,5 +1,9 @@
 ## SUchedule
 
+**IMPORTANT**
+
+**Until @aburakayaz views the pull-request I will be sharing with you the updated version of suchedule for Fall 2020. This version of the suchedule might have bugs that main version is free of. In that case you can contact me from kayagokalp@sabanciuniv.edu**
+ 
 This project allows Sabancı University students to create their schedule with a friendly user interface.
 
 ## Motivation
