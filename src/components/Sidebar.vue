@@ -17,7 +17,7 @@
         <div class="row day-filter">
             <div class="col-md-4">
                 <span class="day-filter-text">
-                    <i class="far fa-calendar"></i> Filter By Day
+                    <i class="fas fa-calendar"></i> Filter By Day
                 </span>
             </div>
             <div class="col-md-8 text-right">
@@ -37,7 +37,7 @@
                             <strong>{{ course.code }}</strong> - {{ course.name }}
                         </div>
                         <div class="caret">
-                            <i class="fal fa-angle-right"></i>
+                            <i class="fas fa-chevron-right"></i>
                         </div>
                     </div>
                     <div class="sections">
@@ -65,17 +65,17 @@
                                             {{ section.group }}
                                         </span>
                                         <span class="go-info">
-                                            <router-link to="#" class="info-link">info <i class="fal fa-external-link"></i></router-link>
+                                            <router-link to="#" class="info-link">info <i class="fas fa-external-link-alt"></i></router-link>
                                         </span>
                                     </span>
                                 </div>
 
                                 <div class="col-md-3 text-right">
                                     <span @click="addToSchedule(section.crn)" v-if="courseSelected(section.crn)" class="section-select">
-                                        <i class="far fa-minus"></i>
+                                        <i class="fas fa-minus"></i>
                                     </span>
                                     <span v-else @click="addToSchedule(section.crn)" class="section-select">
-                                        <i class="far fa-plus"></i>
+                                        <i class="fas fa-plus"></i>
                                     </span>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                                             {{ section.group }}
                                         </span>
                                         <span class="go-info">
-                                            <router-link to="#" class="info-link">info <i class="fal fa-external-link"></i></router-link>
+                                            <router-link to="#" class="info-link">info <i class="fas fa-external-link-alt"></i></router-link>
                                         </span>
                                     </span>
                                 </div>
@@ -192,12 +192,12 @@ export default {
             if(element.hasClass('hide-sections')){
                 $(element).siblings(':not(hide-sections)').addClass('hide-sections');
                 element.removeClass('hide-sections')
-                $(`#course_${code} .caret i`).removeClass("fa-angle-right").addClass("fa-angle-down")
+                $(`#course_${code} .caret i`).removeClass("fa-chevron-right").addClass("fa-chevron-down")
             }
             else{
                 element.siblings(':not(hide-sections)').addClass('hide-sections');
                 element.addClass('hide-sections')
-                $(`#course_${code} .caret i`).addClass("fa-angle-right").removeClass("fa-angle-down")
+                $(`#course_${code} .caret i`).addClass("fa-chevron-right").removeClass("fa-chevron-down")
             }
         },
         filterCourses(){
@@ -286,7 +286,7 @@ export default {
             let code = Math.floor(Math.random() * 9) + 1
             for(let c in this.$store.getters.getCurrentCourses){
                 if(this.$store.getters.getCurrentCourses[c].color === code){
-                    this.getColorCode();
+                    code = this.getColorCode();
                 }
             }
             return code;

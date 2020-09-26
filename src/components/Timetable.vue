@@ -23,20 +23,11 @@
                                          :class="'course-button color-'+ course.color +' text-center'">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <span v-show="course.type === 'L'">
-                                                    <span v-show="$store.getters.isRecitationRequired(course.crn)">
-                                                        <i class="fas fa-exclamation-triangle" title="Recitation is required for this course"></i>
-                                                    </span>
-                                                </span>
-                                                <span v-show="course.type === 'R'">
-                                                    <span v-show="$store.getters.isLectureRequired(course.crn)">
-                                                        <i class="fas fa-exclamation-triangle" title="Lecture is required for this course"></i>
-                                                    </span>
-                                                </span>
+
                                                 {{ course.code + (course.type === "R" ? "R" : "") }} - {{ course.group }}
 
                                                 <i @click="removeCourse(course.crn)" style="font-size: .8em;"
-                                                   class="fal fa-times"></i>
+                                                   class="fas fa-times"></i>
                                             </div>
                                         </div>
                                     </div>

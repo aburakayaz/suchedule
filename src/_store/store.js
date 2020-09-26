@@ -228,4 +228,3 @@ const store = new Vuex.Store({
 })
 
 export default store;
-export {default as actions} from './actions';
