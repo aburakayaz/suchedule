@@ -658,6 +658,7 @@ const classCells = (() => {
     return classCells;
 })();
 
+// showFirstVisitNotifications
 (() => {
     if (localStorage.getItem('visited-before') === null) {
         localStorage.setItem('visited-before', 'yes');
@@ -667,6 +668,7 @@ const classCells = (() => {
     }
 })();
 
+// updateCourseData
 (() => {
     const storageKey = `course-data-${config.term}-${config.dataVersion}`;
     const data = localStorage.getItem(storageKey);
@@ -716,6 +718,7 @@ const classCells = (() => {
     })(courseData);
 })();
 
+// setEvents
 (() => {
     $(document).on('click', '.course-header', event => {
         courseEntry($(event.currentTarget).parent()).toggleOpen();
@@ -816,6 +819,7 @@ const classCells = (() => {
     $(document).on('click', '#about-button', () => $('#notify-about').fadeIn(500));
 })();
 
+// setWeekdayFilterEvents
 (() => {
     $(document).on('input', '#day-filter-selections input', event => {
         sectionEntry.filterByDays();
@@ -828,6 +832,7 @@ const classCells = (() => {
     }
 })();
 
+// loadScheduleFromLocalStorage
 (() => {
     const savedSchedule = localStorage.getItem('saved-schedule');
 
@@ -840,6 +845,7 @@ const classCells = (() => {
     });
 })();
 
+// setNotificationEvents
 (() => {
     $(document).on('click', '.notification .button', event => {
         $(event.target).closest('.notification').fadeOut(500);
@@ -855,6 +861,7 @@ const classCells = (() => {
     });
 })();
 
+// initializeClipboardJS
 (() => {
     const clipboard = new ClipboardJS('#copy-button', {
         text: () => cellCourses.getAllCrnDataToCopy()
