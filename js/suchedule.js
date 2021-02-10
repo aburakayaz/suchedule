@@ -1,8 +1,15 @@
-const config = Object.freeze({
-    term: '202002',
-    infoLink: 'https://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=202002&crn_in=',
-    dataVersion: 17
-});
+import 'jquery';
+import 'jquery-modal';
+import ClipboardJS from 'clipboard';
+
+import './google_calendar_integration';
+import config from './config';
+import courseData from '../data-v17.min.json';
+
+import '../css/jquery.modal.css';
+import '../css/suchedule.css';
+import '../font/animation.css';
+import '../font/fontello.css';
 
 const templateGenerator = (() => {
     const getDayFromCode = (() => {
@@ -651,7 +658,7 @@ const classCells = (() => {
     return classCells;
 })();
 
-(showFirstVisitNotifications = () => {
+(() => {
     if (localStorage.getItem('visited-before') === null) {
         localStorage.setItem('visited-before', 'yes');
 
@@ -660,7 +667,7 @@ const classCells = (() => {
     }
 })();
 
-(updateCourseData = () => {
+(() => {
     const storageKey = `course-data-${config.term}-${config.dataVersion}`;
     const data = localStorage.getItem(storageKey);
 
@@ -698,7 +705,7 @@ const classCells = (() => {
         return;
     }
 
-    $.getJSON(`data-v${config.dataVersion}.min.json`, data => {
+    (data => {
         const {courses, instructors, places} = data;
 
         clearOldData();
@@ -706,10 +713,10 @@ const classCells = (() => {
         courseEntry.populate(courses, instructors, places);
 
         localStorage.setItem(storageKey, JSON.stringify(data));
-    });
+    })(courseData);
 })();
 
-(setEvents = () => {
+(() => {
     $(document).on('click', '.course-header', event => {
         courseEntry($(event.currentTarget).parent()).toggleOpen();
 
@@ -809,7 +816,7 @@ const classCells = (() => {
     $(document).on('click', '#about-button', () => $('#notify-about').fadeIn(500));
 })();
 
-(setWeekdayFilterEvents = () => {
+(() => {
     $(document).on('input', '#day-filter-selections input', event => {
         sectionEntry.filterByDays();
     });
@@ -821,7 +828,7 @@ const classCells = (() => {
     }
 })();
 
-(loadScheduleFromLocalStorage = () => {
+(() => {
     const savedSchedule = localStorage.getItem('saved-schedule');
 
     if (savedSchedule === null) {
@@ -833,7 +840,7 @@ const classCells = (() => {
     });
 })();
 
-(setNotificationEvents = () => {
+(() => {
     $(document).on('click', '.notification .button', event => {
         $(event.target).closest('.notification').fadeOut(500);
     });
@@ -848,7 +855,7 @@ const classCells = (() => {
     });
 })();
 
-(initializeClipboardJS = () => {
+(() => {
     const clipboard = new ClipboardJS('#copy-button', {
         text: () => cellCourses.getAllCrnDataToCopy()
     });

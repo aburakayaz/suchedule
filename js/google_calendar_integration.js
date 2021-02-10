@@ -1,4 +1,8 @@
 "use strict";
+import 'jquery';
+import 'jquery-modal';
+
+import config from './config';
 
 const GOOGLE_API = (() => {
     //  Google API Configurations
