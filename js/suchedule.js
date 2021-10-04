@@ -807,6 +807,7 @@ const classCells = (() => {
     $(document).on('click', '#clear-button', () => $('#notify-clear').fadeIn(500));
 
     $(document).on('click', '#about-button', () => $('#notify-about').fadeIn(500));
+    $(document).on('click', '#about-button', () => $('#notify-cookies').fadeIn(500));
 })();
 
 (setWeekdayFilterEvents = () => {

@@ -605,7 +605,21 @@ tr > td:first-child, th:first-child {
     cursor: pointer;
 }
 
+.market {
+    cursor: pointer;
+}
+
+.market-link {
+    color: inherit;
+    text-decoration:none;
+}
+
 .button:hover {
+    color: #cccccc !important;
+    border-color: currentColor !important;
+}
+
+.market:hover {
     color: #cccccc !important;
     border-color: currentColor !important;
 }
