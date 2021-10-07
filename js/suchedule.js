@@ -1,7 +1,7 @@
 const config = Object.freeze({
     term: '202101',
     infoLink: 'https://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=202101&crn_in=',
-    dataVersion: 24
+    dataVersion: 25
 });
 
 const templateGenerator = (() => {
@@ -31,6 +31,7 @@ const templateGenerator = (() => {
                 <div class="course-expand icon-right-open-big"></div>
             </div>
             <div class="course-info">
+            <div class="section-type">${course.prerequisites ? `Prerequisites: ${course.prerequisites}` : ``}</div>
             ${course.classes.map(_class => `
                 <div class="course-sections">
                     <div class="section-type">Sections${_class.type ? ` (${_class.type})` : ``}</div>
