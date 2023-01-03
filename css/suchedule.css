@@ -467,6 +467,7 @@ tr > td:first-child, th:first-child {
 
 .hour-cell {
     font-weight: bold;
+    display: grid;
 }
 
 #schedule th:nth-child(even), td:nth-child(even) {
