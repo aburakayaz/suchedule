@@ -1,7 +1,7 @@
 const config = Object.freeze({
     term: '202202',
     infoLink: 'https://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=202202&crn_in=',
-    dataVersion: 32
+    dataVersion: 33
 });
 
 const templateGenerator = (() => {
