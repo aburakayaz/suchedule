@@ -33,6 +33,7 @@ const templateGenerator = (() => {
                 <div class="course-expand icon-right-open-big"></div>
             </div>
             <div class="course-info">
+            <div class="section-type">${course.prerequisites ? `Prerequisites: ${course.prerequisites}` : ``}</div>
             ${course.classes.map(_class => `
                 <div class="course-sections">
                     <div class="section-type">Sections${_class.type ? ` (${_class.type})` : ``}</div>
