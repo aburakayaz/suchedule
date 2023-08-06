@@ -1,8 +1,10 @@
-const config = Object.freeze({
+const config = {
     term: '202301',
-    infoLink: 'https://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=202202&crn_in=',
     dataVersion: 34
-});
+};
+
+config.infoLink = `https://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=${config.term}&crn_in=`;
+Object.freeze(config);
 
 const templateGenerator = (() => {
     const getDayFromCode = (() => {
