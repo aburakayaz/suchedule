@@ -73,7 +73,6 @@ jobs:
             echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
           fi
           echo "::endgroup::"
-          fi
           
       - name: Create Pull Request
         if: steps.check.outputs.changes == 'true'
