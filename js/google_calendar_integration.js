@@ -28,7 +28,7 @@ const GOOGLE_API = (() => {
             });
         } catch (e) {
             console.error(e);
-            alert('Google API failed to initialize.');
+            alert('Google API failed to initialize.\n(this only affects the add to calender function, you can ignore it)');
             return;
         }
 
