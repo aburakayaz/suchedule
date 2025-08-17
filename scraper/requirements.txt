@@ -46,7 +46,7 @@ six==1.17.0
 soupsieve==2.6
 stack-data==0.6.3
 tinycss2==1.4.0
-tornado==6.4.2
+tornado==6.5.1
 traitlets==5.14.3
 urllib3==2.3.0
 wcwidth==0.2.13
