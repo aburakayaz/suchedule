@@ -1,6 +1,6 @@
 const config = {
-    term: '202402',
-    dataVersion: 59
+    term: '202501',
+    dataVersion: 61
 };
 
 config.infoLink = `https://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=${config.term}&crn_in=`;
