@@ -213,7 +213,9 @@ const courseEntry = (() => {
     };
 
     courseEntry.prototype.nameContains = function (query) {
-        return this.getName().toUpperCase().indexOf(query) > -1;
+        let name = this.getName();
+        name = name.replaceAll(/\s+/g, '').toUpperCase();
+        return name.indexOf(query) > -1;
     };
 
     courseEntry.prototype.isSelectionComplete = function () {
@@ -670,6 +672,8 @@ const classCells = (() => {
         $('#notify-data-updated').fadeIn(500);
     };
 
+    
+
     const clearOldData = () => {
         let removedData = false;
 
@@ -710,6 +714,13 @@ const classCells = (() => {
         localStorage.setItem(storageKey, JSON.stringify(data));
     });
 })();
+
+const normalizeSearchParam = (query) => {
+        query = query.trim().toUpperCase();
+        query = query.replaceAll(/\s+/g, '');
+        
+        return query;
+};
 
 (setEvents = () => {
     $(document).on('click', '.course-header', event => {
@@ -766,7 +777,7 @@ const classCells = (() => {
 
         const filterName = 'search';
 
-        const searchQuery = ($('#search-box').val() || '').toUpperCase();
+        const searchQuery = (normalizeSearchParam($('#search-box').val()) || '');
 
         switch ($('#search-category').val()) {
             case 'name':
