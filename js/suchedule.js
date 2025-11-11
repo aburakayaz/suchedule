@@ -777,7 +777,7 @@ const normalizeSearchParam = (query) => {
 
         const filterName = 'search';
 
-        const searchQuery = (normalizeSearchParam($('#search-box').val()) || '');
+        const searchQuery = (normalizeSearchParam($('#search-box').val() || '') || '');
 
         switch ($('#search-category').val()) {
             case 'name':
