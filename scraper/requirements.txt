@@ -48,7 +48,7 @@ stack-data==0.6.3
 tinycss2==1.4.0
 tornado==6.5.1
 traitlets==5.14.3
-urllib3==2.5.0
+urllib3==2.6.3
 wcwidth==0.2.13
 webencodings==0.5.1
 yarg==0.1.9
