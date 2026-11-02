@@ -29,8 +29,9 @@ jobs:
           
       - name: Scrape recent terms
         run: |
-          # Writes data/<term>.min.json for the 4 most recent terms on Banner and data/terms.json
-          python scraper/update_data.py --count 4
+          # Writes data/<term>.min.json for every term since Fall 1999-2000 that has classes on Banner,
+          # plus data/terms.json. Only the 4 newest terms are scraped again; older ones are kept as they are.
+          python scraper/update_data.py --since 199901 --refresh 4
 
       - name: Check for changes
         id: check

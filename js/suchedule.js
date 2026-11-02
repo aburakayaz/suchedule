@@ -799,8 +799,22 @@ const termData = (() => {
                     localStorage.removeItem('saved-schedule');
                 }
 
-                $('#term-select').html(manifest.terms.map(t => `<option value="${t.term}">${t.name}</option>`).join(''))
-                    .prop('disabled', false);
+                // Group the terms by academic year: "Fall 2026-2027" -> "2026-2027"
+                const years = [];
+
+                manifest.terms.forEach(t => {
+                    const year = t.name.split(' ').pop();
+
+                    if (!years.length || years[years.length - 1].year !== year) years.push({year, terms: []});
+
+                    years[years.length - 1].terms.push(t);
+                });
+
+                $('#term-select').html(years.map(({year, terms}) => `
+                    <optgroup label="${year}">
+                        ${terms.map(t => `<option value="${t.term}">${t.name}</option>`).join('')}
+                    </optgroup>
+                `).join('')).prop('disabled', false);
 
                 const saved = localStorage.getItem('selected-term');
 

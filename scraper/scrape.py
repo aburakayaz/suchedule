@@ -205,6 +205,8 @@ class SUcheduleCourseScraper:
         """
         Edit course name for json file.
         """
+        original = name
+
         if "Lab" in name and "Labor" not in name:
             name = name.replace("Lab", "")
 
@@ -213,6 +215,10 @@ class SUcheduleCourseScraper:
 
         if "Discussion" in name:
             name = name.replace("Discussion", "")
+
+        # Some old courses are named just "Lab" / "Recitation"; keep their name instead of an empty one
+        if not name.strip():
+            return original.strip()
 
         if name[-1] == " " or name[-1] == ",":
             name = name[:-1]
@@ -227,13 +233,13 @@ class SUcheduleCourseScraper:
         """
         Edit course code for json file.
         """
-        if code[-1] == " ":
+        if code[-1:] == " ":
             code = code[:-1]
 
-        if code[0] == " ":
+        if code[:1] == " ":
             code = code[1:]
 
-        if code[-1].isalpha():
+        if code[-1:].isalpha():
             code = code[:-1]
 
         return code
@@ -243,10 +249,10 @@ class SUcheduleCourseScraper:
         """
         Edit course crn for json file.
         """
-        if text[-1] == " ":
+        if text[-1:] == " ":
             text = text[:-1]
 
-        if text[0] == " ":
+        if text[:1] == " ":
             text = text[1:]
 
         return text

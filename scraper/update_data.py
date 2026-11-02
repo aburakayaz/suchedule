@@ -5,7 +5,10 @@ Scrape the most recent terms listed on Banner and write the website's data files
     data/terms.json        the selectable terms, a content hash per term (for cache busting)
                            and the default term
 
-Usage: python scraper/update_data.py [--count N] [--terms 202602 202601 ...]
+Usage: python scraper/update_data.py [--count N | --since TERM | --terms TERM ...] [--refresh N]
+
+Past terms rarely change, so with --refresh N only the N newest terms are scraped again; older terms
+are scraped only when their data file is missing. Terms that have no classes on Banner are skipped.
 """
 import argparse
 import datetime
@@ -66,30 +69,42 @@ def write_if_changed(path: str, content: str) -> bool:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--count", type=int, default=4, help="number of most recent terms to publish (default 4)")
-    parser.add_argument("--terms", nargs="+", help="publish exactly these term codes instead of the most recent ones")
+    parser.add_argument("--since", help="publish every term from this term code on, e.g. 199901 (overrides --count)")
+    parser.add_argument("--terms", nargs="+", help="publish exactly these term codes")
+    parser.add_argument("--refresh", type=int,
+                        help="scrape only the N newest terms again and reuse the existing files of older terms "
+                             "(default: scrape every term)")
     args = parser.parse_args()
 
     available = fetch_terms()
     if args.terms:
         names = {t["term"]: t["name"] for t in available}
         selected = [{"term": code, "name": names.get(code, code)} for code in sorted(args.terms, reverse=True)]
+    elif args.since:
+        selected = [t for t in available if t["term"] >= args.since]
     else:
         selected = available[:args.count]
 
     os.makedirs(DATA_DIR, exist_ok=True)
     published = []
 
-    for term in selected:
-        print(f"Scraping {term['term']} ({term['name']})")
-        data = SUcheduleCourseScraper(term=int(term["term"])).scrape()
+    for index, term in enumerate(selected):
+        path = os.path.join(DATA_DIR, f"{term['term']}.min.json")
 
-        if not data["courses"]:
-            print(f"  No courses published for {term['term']}, skipping it.")
-            continue
+        if args.refresh is not None and index >= args.refresh and os.path.exists(path):
+            with open(path, encoding="utf-8") as file:
+                content = file.read()
+        else:
+            print(f"Scraping {term['term']} ({term['name']})")
+            data = SUcheduleCourseScraper(term=int(term["term"])).scrape()
 
-        content = json.dumps(data, ensure_ascii=False)
-        changed = write_if_changed(os.path.join(DATA_DIR, f"{term['term']}.min.json"), content)
-        print(f"  {len(data['courses'])} courses, {'updated' if changed else 'unchanged'}.")
+            if not data["courses"]:
+                print(f"  No classes on Banner for {term['term']}, skipping it.")
+                continue
+
+            content = json.dumps(data, ensure_ascii=False)
+            changed = write_if_changed(path, content)
+            print(f"  {len(data['courses'])} courses, {'updated' if changed else 'unchanged'}.")
 
         published.append({
             "term": term["term"],
