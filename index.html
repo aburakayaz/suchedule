@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="font/fontello.min.css">
     <link rel="stylesheet" href="css/jquery.modal.min.css">
     <link rel="stylesheet" href="css/suchedule.min.css">
+    <link rel="stylesheet" href="css/rooms.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
@@ -32,20 +33,25 @@
 <body>
 <header>
     <div id="logo">SUchedule</div>
-    <div id="about-button" class="icon-help button"></div>
-    <div id="clear-button" class="icon-trash button">Clear</div>
-    <div id="copy-button" class="icon-clipboard button">Copy Crn</div>
+    <nav id="view-tabs">
+        <div class="view-tab button active" data-view="courses">Courses</div>
+        <div class="view-tab button" data-view="rooms">Rooms</div>
+    </nav>
+    <div id="about-button" class="icon-help button course-only"></div>
+    <div id="rooms-about-button" class="icon-help button room-only"></div>
+    <div id="clear-button" class="icon-trash button course-only">Clear</div>
+    <div id="copy-button" class="icon-clipboard button course-only">Copy Crn</div>
 </header>
 <div id="menu">
     <div id="menu-toggle" class="icon-menu button"></div>
-    <div class="menu-item" id="search-box-container">
+    <div class="menu-item course-only" id="search-box-container">
         <input id="search-box" title="search" type="text" placeholder="Search for">
         <select id="search-category">
             <option value="name">Course Name</option>
             <option value="instructor">Instructor</option>
         </select>
     </div>
-    <div id="day-filter" class="menu-item">
+    <div id="day-filter" class="menu-item course-only">
         <div id="day-filter-label" class="filter-icon icon-calendar">
         </div>
         <div id="day-filter-selections">
@@ -61,11 +67,15 @@
                 <label for="day-filter-4">Fri</label>
         </div>
     </div>
-    <div id="course-list-shadow" class="menu-item"></div>
-    <div id="course-list" class="menu-item loading"></div>
+    <div id="course-list-shadow" class="menu-item course-only"></div>
+    <div id="course-list" class="menu-item loading course-only"></div>
+    <div class="menu-item room-only" id="room-search-container">
+        <input id="room-search" title="search rooms" type="text" placeholder="Search rooms, e.g. FENS G077">
+    </div>
+    <div id="room-list" class="menu-item loading room-only"></div>
 </div>
 <div id="main-content">
-    <table id="schedule">
+    <table id="schedule" class="course-only">
         <tr>
             <th>-</th>
             <th class="day-cell">Monday</th>
@@ -163,6 +173,14 @@
             <td class="class-cell"></td>
         </tr>
     </table>
+    <div id="room-view" class="room-only">
+        <div id="room-view-header">
+            <div id="room-view-title"></div>
+            <div id="room-view-meta"></div>
+        </div>
+        <div id="room-grid"></div>
+        <div id="room-extra"></div>
+    </div>
 </div>
 <div id="notifications">
     <div id="notify-about" class="notification" style="display: none;">
@@ -184,6 +202,25 @@
             <iframe style="display:inline-block;"
                     src="https://ghbtns.com/github-btn.html?user=aburakayaz&repo=suchedule&type=watch&count=true&v=2"
                     frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+        </div>
+        <div class="notification-button button">Thank You!</div>
+    </div>
+    <div id="notify-rooms-about" class="notification room-only" style="display: none;">
+        <div class="notification-header">
+            <div class="notification-header-text">About (?)</div>
+            <div class="icon-cancel shake-on-hover button"></div>
+        </div>
+        <div class="notification-content">
+            <p>I am Ismayil. I've built the Rooms tab so you can see when each classroom is in use throughout
+                the week.</p>
+            <p>Feel free to contact me about your suggestions:</p>
+            <p>ismayil.taghi-zada@sabanciuniv.edu</p>
+            <p>Find me on GitHub:</p>
+            <div class="market"><a class="market-link" href="https://github.com/istadem2077" target="_blank"
+                                   rel="noopener"><i class="fab fa-github"></i>   github.com/istadem2077</a></div>
+            <iframe style="display:inline-block;"
+                    src="https://ghbtns.com/github-btn.html?user=istadem2077&type=follow&count=true" frameborder="0"
+                    scrolling="0" width="170px" height="20px"></iframe>
         </div>
         <div class="notification-button button">Thank You!</div>
     </div>
@@ -288,6 +325,7 @@
 <script src="js/jquery.modal.min.js"></script>
 <script src="js/clipboard.min.js"></script>
 <script src="js/suchedule.min.js"></script>
+<script src="js/rooms.min.js"></script>
 <script src="https://apis.google.com/js/api.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113204083-2"></script>
