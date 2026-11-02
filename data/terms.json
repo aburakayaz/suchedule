@@ -1,0 +1,320 @@
+{
+  "default": "202601",
+  "terms": [
+    {
+      "term": "202602",
+      "name": "Spring 2026-2027",
+      "hash": "d4c4a2f88b"
+    },
+    {
+      "term": "202601",
+      "name": "Fall 2026-2027",
+      "hash": "4f2abff69a"
+    },
+    {
+      "term": "202503",
+      "name": "Summer 2025-2026",
+      "hash": "8665f3a570"
+    },
+    {
+      "term": "202502",
+      "name": "Spring 2025-2026",
+      "hash": "6b31ce7b77"
+    },
+    {
+      "term": "202501",
+      "name": "Fall 2025-2026",
+      "hash": "721ca8db11"
+    },
+    {
+      "term": "202403",
+      "name": "Summer 2024-2025",
+      "hash": "4fada7bc12"
+    },
+    {
+      "term": "202402",
+      "name": "Spring 2024-2025",
+      "hash": "fd57ed6832"
+    },
+    {
+      "term": "202401",
+      "name": "Fall 2024-2025",
+      "hash": "d182470fb0"
+    },
+    {
+      "term": "202303",
+      "name": "Summer 2023-2024",
+      "hash": "7adb17f5ab"
+    },
+    {
+      "term": "202302",
+      "name": "Spring 2023-2024",
+      "hash": "fdc0defac6"
+    },
+    {
+      "term": "202301",
+      "name": "Fall 2023-2024",
+      "hash": "c3ff370faf"
+    },
+    {
+      "term": "202203",
+      "name": "Summer 2022-2023",
+      "hash": "8842f2f0c3"
+    },
+    {
+      "term": "202202",
+      "name": "Spring 2022-2023",
+      "hash": "67a944159c"
+    },
+    {
+      "term": "202201",
+      "name": "Fall 2022-2023",
+      "hash": "b0b7c365fa"
+    },
+    {
+      "term": "202103",
+      "name": "Summer 2021-2022",
+      "hash": "b635c5e106"
+    },
+    {
+      "term": "202102",
+      "name": "Spring 2021-2022",
+      "hash": "e04f6321be"
+    },
+    {
+      "term": "202101",
+      "name": "Fall 2021-2022",
+      "hash": "22514bc7c2"
+    },
+    {
+      "term": "202003",
+      "name": "Summer 2020-2021",
+      "hash": "1e2ce7b5cd"
+    },
+    {
+      "term": "202002",
+      "name": "Spring 2020-2021",
+      "hash": "8064000ab9"
+    },
+    {
+      "term": "202001",
+      "name": "Fall 2020-2021",
+      "hash": "8e0ddbee36"
+    },
+    {
+      "term": "201903",
+      "name": "Summer 2019-2020",
+      "hash": "1f8e54d4a9"
+    },
+    {
+      "term": "201902",
+      "name": "Spring 2019-2020",
+      "hash": "73811ff1be"
+    },
+    {
+      "term": "201901",
+      "name": "Fall 2019-2020",
+      "hash": "962e88703e"
+    },
+    {
+      "term": "201803",
+      "name": "Summer 2018-2019",
+      "hash": "7c6073de9e"
+    },
+    {
+      "term": "201802",
+      "name": "Spring 2018-2019",
+      "hash": "ca64caaec7"
+    },
+    {
+      "term": "201801",
+      "name": "Fall 2018-2019",
+      "hash": "8cb7b754f9"
+    },
+    {
+      "term": "201703",
+      "name": "Summer 2017-2018",
+      "hash": "4dd8348b19"
+    },
+    {
+      "term": "201702",
+      "name": "Spring 2017-2018",
+      "hash": "150d6dd4b8"
+    },
+    {
+      "term": "201701",
+      "name": "Fall 2017-2018",
+      "hash": "fe11551134"
+    },
+    {
+      "term": "201603",
+      "name": "Summer 2016-2017",
+      "hash": "078cbf13a4"
+    },
+    {
+      "term": "201602",
+      "name": "Spring 2016-2017",
+      "hash": "892546c097"
+    },
+    {
+      "term": "201601",
+      "name": "Fall 2016-2017",
+      "hash": "d3dcc130ab"
+    },
+    {
+      "term": "201503",
+      "name": "Summer 2015-2016",
+      "hash": "52e3e88528"
+    },
+    {
+      "term": "201502",
+      "name": "Spring 2015-2016",
+      "hash": "61011da08a"
+    },
+    {
+      "term": "201501",
+      "name": "Fall 2015-2016",
+      "hash": "aceece1a15"
+    },
+    {
+      "term": "201403",
+      "name": "Summer 2014-2015",
+      "hash": "b8173b132f"
+    },
+    {
+      "term": "201402",
+      "name": "Spring 2014-2015",
+      "hash": "8030e5951b"
+    },
+    {
+      "term": "201401",
+      "name": "Fall 2014-2015",
+      "hash": "7c02ae09c6"
+    },
+    {
+      "term": "201303",
+      "name": "Summer 2013-2014",
+      "hash": "48a03afa40"
+    },
+    {
+      "term": "201302",
+      "name": "Spring 2013-2014",
+      "hash": "ded4a3c4ab"
+    },
+    {
+      "term": "201301",
+      "name": "Fall 2013-2014",
+      "hash": "fbc830691d"
+    },
+    {
+      "term": "201203",
+      "name": "Summer 2012-2013",
+      "hash": "df4256e774"
+    },
+    {
+      "term": "201202",
+      "name": "Spring 2012-2013",
+      "hash": "2d8ab48185"
+    },
+    {
+      "term": "201201",
+      "name": "Fall 2012-2013",
+      "hash": "840af3b275"
+    },
+    {
+      "term": "201103",
+      "name": "Summer 2011-2012",
+      "hash": "ed3ecc7b3d"
+    },
+    {
+      "term": "201102",
+      "name": "Spring 2011-2012",
+      "hash": "d9c1567cea"
+    },
+    {
+      "term": "201101",
+      "name": "Fall 2011-2012",
+      "hash": "f0d1d58545"
+    },
+    {
+      "term": "200903",
+      "name": "Summer 2009-2010",
+      "hash": "1d50df4f50"
+    },
+    {
+      "term": "200902",
+      "name": "Spring 2009-2010",
+      "hash": "ac46c78ef6"
+    },
+    {
+      "term": "200901",
+      "name": "Fall 2009-2010",
+      "hash": "0a25949b10"
+    },
+    {
+      "term": "200803",
+      "name": "Summer 2008-2009",
+      "hash": "9b2abc61d3"
+    },
+    {
+      "term": "200802",
+      "name": "Spring 2008-2009",
+      "hash": "d5bc6f709c"
+    },
+    {
+      "term": "200801",
+      "name": "Fall 2008-2009",
+      "hash": "f34f150bdf"
+    },
+    {
+      "term": "200703",
+      "name": "Summer 2007-2008",
+      "hash": "9a3360114e"
+    },
+    {
+      "term": "200702",
+      "name": "Spring 2007-2008",
+      "hash": "40652401b4"
+    },
+    {
+      "term": "200701",
+      "name": "Fall 2007-2008",
+      "hash": "7f6d6fa227"
+    },
+    {
+      "term": "200603",
+      "name": "Summer 2006-2007",
+      "hash": "9d00474e05"
+    },
+    {
+      "term": "200602",
+      "name": "Spring 2006-2007",
+      "hash": "144d516fb0"
+    },
+    {
+      "term": "200503",
+      "name": "Summer 2005-2006",
+      "hash": "540b8d7cad"
+    },
+    {
+      "term": "200502",
+      "name": "Spring 2005-2006",
+      "hash": "504c518c1e"
+    },
+    {
+      "term": "200501",
+      "name": "Fall 2005-2006",
+      "hash": "1041e7fed3"
+    },
+    {
+      "term": "200403",
+      "name": "Summer 2004-2005",
+      "hash": "345f0de96b"
+    },
+    {
+      "term": "200402",
+      "name": "Spring 2004-2005",
+      "hash": "d943605eae"
+    }
+  ]
+}

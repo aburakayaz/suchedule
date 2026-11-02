@@ -1,10 +1,20 @@
 const config = {
-    term: '202601',
-    dataVersion: 85
+    termsUrl: 'data/terms.json',
+    dataUrl: term => `data/${term.term}.min.json?v=${term.hash}`
+};
+Object.freeze(config);
+
+// Selected term ({term, name, hash}) and every selectable term, filled from data/terms.json
+const termState = {
+    current: null,
+    terms: []
 };
 
-config.infoLink = `https://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=${config.term}&crn_in=`;
-Object.freeze(config);
+// Course data ({courses, instructors, places}) of the selected term, null while loading
+let currentTermData = null;
+
+const infoLink = crn =>
+    `https://suis.sabanciuniv.edu/prod/bwckschd.p_disp_detail_sched?term_in=${termState.current.term}&crn_in=${crn}`;
 
 const templateGenerator = (() => {
     const getDayFromCode = (() => {
@@ -43,7 +53,7 @@ const templateGenerator = (() => {
                     <div class="section-info">
                         <div class="section-header">
                             <div class="section-group" data-group="${section.group}">${section.group}</div>
-                            <a href="${config.infoLink}${section.crn}" class="section-link" target="_blank">info</a>
+                            <a href="${infoLink(section.crn)}" class="section-link" target="_blank">info</a>
                         </div>
                         <div class="instructor">${instructors[section.instructors]}</div>
                         <div class="section-days">
@@ -113,8 +123,10 @@ const colorPalette = (() => {
     };
 })();
 
+const savedScheduleKey = () => `saved-schedule-${termState.current.term}`;
+
 const saveSchedule = () => {
-    localStorage.setItem('saved-schedule', cellCourses.getAllCrnDataToSave().join(','));
+    localStorage.setItem(savedScheduleKey(), cellCourses.getAllCrnDataToSave().join(','));
 };
 
 const courseEntry = (() => {
@@ -664,55 +676,159 @@ const classCells = (() => {
     }
 })();
 
-(updateCourseData = () => {
-    const storageKey = `course-data-${config.term}-${config.dataVersion}`;
-    const data = localStorage.getItem(storageKey);
+const termData = (() => {
+    const storageKey = term => `course-data-${term.term}-${term.hash}`;
 
-    const showNotification = () => {
-        $('#notify-data-updated').fadeIn(500);
-    };
+    let requestId = 0;
 
-    
+    // Collect first, then remove: removing while iterating localStorage by index skips keys.
+    const removeStorageKeys = predicate => {
+        const keys = [];
 
-    const clearOldData = () => {
-        let removedData = false;
-
-        for (let i = 0; ; i++) {
+        for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
 
-            if (key === null) {
-                break;
-            }
-
-            if (key.indexOf('course-data') > -1 || key.indexOf('saved-schedule') > -1) {
-                localStorage.removeItem(key);
-
-                removedData = true;
-            }
+            if (key !== null && predicate(key)) keys.push(key);
         }
 
-        if (removedData) {
-            showNotification();
+        keys.forEach(key => localStorage.removeItem(key));
+
+        return keys.length > 0;
+    };
+
+    const cacheData = (term, text) => {
+        try {
+            localStorage.setItem(storageKey(term), text);
+        } catch (e) {
+            // Storage full: keep only the selected term's data cached.
+            removeStorageKeys(key => key.indexOf('course-data-') === 0);
+
+            try {
+                localStorage.setItem(storageKey(term), text);
+            } catch (ignored) {
+                // Not cached; it will be downloaded again next time.
+            }
         }
     };
 
-    if (data !== null) {
-        const {courses, instructors, places} = JSON.parse(data);
+    const fetchData = (term, done, fail) => {
+        const cached = localStorage.getItem(storageKey(term));
 
-        courseEntry.populate(courses, instructors, places);
+        if (cached !== null) {
+            return done(JSON.parse(cached));
+        }
 
-        return;
-    }
+        $.ajax({url: config.dataUrl(term), dataType: 'text'})
+            .done(text => {
+                // An older version of this term's data means the courses have changed since the schedule was saved.
+                const outdated = removeStorageKeys(key => key.indexOf(`course-data-${term.term}-`) === 0);
 
-    $.getJSON(`data-v${config.dataVersion}.min.json`, data => {
-        const {courses, instructors, places} = data;
+                if (outdated && localStorage.getItem(`saved-schedule-${term.term}`) !== null) {
+                    localStorage.removeItem(`saved-schedule-${term.term}`);
 
-        clearOldData();
+                    $('#notify-data-updated').fadeIn(500);
+                }
 
-        courseEntry.populate(courses, instructors, places);
+                cacheData(term, text);
 
-        localStorage.setItem(storageKey, JSON.stringify(data));
-    });
+                done(JSON.parse(text));
+            })
+            .fail(fail);
+    };
+
+    const resetPlanner = () => {
+        if (courseEntry.isOnDisplayMode()) courseEntry.endDisplayMode();
+
+        $('#course-list').empty().addClass('loading');
+        $('.class-cell').attr('class', 'class-cell').children().remove();
+
+        colorPalette.reset();
+    };
+
+    const reapplyFilters = () => {
+        if ($('#day-filter-selections input:not(:checked)').length > 0) sectionEntry.filterByDays();
+
+        if ($('#search-box').val()) $('#search-box').trigger('input');
+    };
+
+    const select = code => {
+        const term = termState.terms.find(t => t.term === code) || termState.terms[0];
+        const id = ++requestId;
+
+        termState.current = term;
+        currentTermData = null;
+
+        localStorage.setItem('selected-term', term.term);
+        $('#term-select').val(term.term);
+
+        resetPlanner();
+
+        if (typeof roomSchedule !== 'undefined') roomSchedule.setData(null);
+
+        fetchData(term, data => {
+            if (id !== requestId) return; // another term was selected meanwhile
+
+            currentTermData = data;
+
+            courseEntry.populate(data.courses, data.instructors, data.places);
+            reapplyFilters();
+            loadScheduleFromLocalStorage();
+
+            if (typeof roomSchedule !== 'undefined') roomSchedule.setData(data, term);
+        }, () => {
+            if (id !== requestId) return;
+
+            $('#course-list').removeClass('loading').html(
+                `<div class="load-error">Couldn't load the courses of ${term.name}. Please refresh the page.</div>`);
+        });
+    };
+
+    const init = () => {
+        $.ajax({url: config.termsUrl, dataType: 'json', cache: false})
+            .done(manifest => {
+                termState.terms = manifest.terms;
+
+                // Schedules saved before terms were selectable belong to the default term.
+                const legacySchedule = localStorage.getItem('saved-schedule');
+
+                if (legacySchedule !== null) {
+                    if (localStorage.getItem(`saved-schedule-${manifest.default}`) === null) {
+                        localStorage.setItem(`saved-schedule-${manifest.default}`, legacySchedule);
+                    }
+
+                    localStorage.removeItem('saved-schedule');
+                }
+
+                // Group the terms by academic year: "Fall 2026-2027" -> "2026-2027"
+                const years = [];
+
+                manifest.terms.forEach(t => {
+                    const year = t.name.split(' ').pop();
+
+                    if (!years.length || years[years.length - 1].year !== year) years.push({year, terms: []});
+
+                    years[years.length - 1].terms.push(t);
+                });
+
+                $('#term-select').html(years.map(({year, terms}) => `
+                    <optgroup label="${year}">
+                        ${terms.map(t => `<option value="${t.term}">${t.name}</option>`).join('')}
+                    </optgroup>
+                `).join('')).prop('disabled', false);
+
+                const saved = localStorage.getItem('selected-term');
+
+                select(manifest.terms.some(t => t.term === saved) ? saved : manifest.default);
+            })
+            .fail(() => {
+                $('#course-list').removeClass('loading').html(
+                    '<div class="load-error">Couldn\'t load the list of terms. Please refresh the page.</div>');
+            });
+
+        $('#term-select').on('change', event => select(event.currentTarget.value));
+    };
+
+    return {init, select};
 })();
 
 const normalizeSearchParam = (query) => {
@@ -835,17 +951,19 @@ const normalizeSearchParam = (query) => {
     }
 })();
 
-(loadScheduleFromLocalStorage = () => {
-    const savedSchedule = localStorage.getItem('saved-schedule');
+const loadScheduleFromLocalStorage = () => {
+    const savedSchedule = localStorage.getItem(savedScheduleKey());
 
-    if (savedSchedule === null) {
+    if (!savedSchedule) {
         return;
     }
 
     savedSchedule.split(',').forEach(crn => {
         $(`.course-section[data-crn="${crn}"]`).click();
     });
-})();
+};
+
+termData.init();
 
 (setNotificationEvents = () => {
     $(document).on('click', '.notification .button', event => {

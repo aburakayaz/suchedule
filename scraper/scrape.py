@@ -13,15 +13,25 @@ class SUcheduleCourseScraper:
         self.instructors = []
         self.places = []
 
-    def run(self) -> None:
+    def scrape(self) -> Dict:
         """
-        Run required flow for getting course schedule and saving to a .json file
+        Fetch the course schedule of the term and return it in the website's data format
         """
         course_codes = self.get_course_codes()
         print("Course codes are fetched.")
         course_datas = self.get_courses_data(codes=course_codes)
         print("Course data is fetched.")
-        self.write_json_file(courses=course_datas,places=self.places,instructors=self.instructors)
+        return {"courses": course_datas,
+                "instructors": self.instructors,
+                "places": self.places}
+
+    def run(self, output: str = "data.min.json") -> None:
+        """
+        Run required flow for getting course schedule and saving to a .json file
+        """
+        data = self.scrape()
+        with open(output, "w", encoding='utf-8') as file:
+            json.dump(data, file, ensure_ascii=False)
         print("Json file is created.")
 
     def get_course_codes(self) -> List[str]:
@@ -195,6 +205,8 @@ class SUcheduleCourseScraper:
         """
         Edit course name for json file.
         """
+        original = name
+
         if "Lab" in name and "Labor" not in name:
             name = name.replace("Lab", "")
 
@@ -203,6 +215,10 @@ class SUcheduleCourseScraper:
 
         if "Discussion" in name:
             name = name.replace("Discussion", "")
+
+        # Some old courses are named just "Lab" / "Recitation"; keep their name instead of an empty one
+        if not name.strip():
+            return original.strip()
 
         if name[-1] == " " or name[-1] == ",":
             name = name[:-1]
@@ -217,13 +233,13 @@ class SUcheduleCourseScraper:
         """
         Edit course code for json file.
         """
-        if code[-1] == " ":
+        if code[-1:] == " ":
             code = code[:-1]
 
-        if code[0] == " ":
+        if code[:1] == " ":
             code = code[1:]
 
-        if code[-1].isalpha():
+        if code[-1:].isalpha():
             code = code[:-1]
 
         return code
@@ -233,10 +249,10 @@ class SUcheduleCourseScraper:
         """
         Edit course crn for json file.
         """
-        if text[-1] == " ":
+        if text[-1:] == " ":
             text = text[:-1]
 
-        if text[0] == " ":
+        if text[:1] == " ":
             text = text[1:]
 
         return text
@@ -322,17 +338,6 @@ class SUcheduleCourseScraper:
             self.places.append(place)
 
         return self.places.index(place)
-
-    @staticmethod
-    def write_json_file(courses: List[Dict], instructors: List[str], places: List[str]):
-        """
-        Write json file.
-        """
-        data = {"courses": courses,
-                "instructors": instructors,
-                "places": places}
-        with open("data.min.json", "w", encoding='utf-8') as file:
-            json.dump(data, file, ensure_ascii=False)
 
 
 if __name__ == '__main__':
