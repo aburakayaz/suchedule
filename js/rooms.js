@@ -1,9 +1,9 @@
 /*
  * Room timetable view.
  *
- * Builds a per-room weekly schedule from the same data file the course planner uses
- * (data-v{N}.min.json) and renders it in the "Rooms" tab. Relies on the globals
- * `config` and `courseEntry` from suchedule.js, so it must be loaded after it.
+ * Builds a per-room weekly schedule from the course data of the selected term and renders it in the
+ * "Rooms" tab. suchedule.js loads the term data and hands it over through roomSchedule.setData();
+ * this file relies on its globals (`courseEntry`, `currentTermData`, `termState`), so load it after it.
  */
 const roomSchedule = (() => {
     const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -16,6 +16,7 @@ const roomSchedule = (() => {
 
     const rooms = new Map(); // room name -> meetings[]
     let selectedRoom = '';
+    let termName = '';
     let ready = false;
 
     const natural = new Intl.Collator('en', {numeric: true, sensitivity: 'base'}).compare;
@@ -223,13 +224,13 @@ const roomSchedule = (() => {
         $('#room-grid').html(html);
 
         let title = 'Select a room';
-        let meta = `${rooms.size} rooms, grouped by building. Pick one from the list to see its weekly timetable.`;
+        let meta = `${termName}: ${rooms.size} rooms, grouped by building. Pick one from the list to see its weekly timetable.`;
 
         if (selectedRoom) {
             title = selectedRoom;
             meta = onGrid.length
-                ? `${onGrid.length} class meeting${onGrid.length === 1 ? '' : 's'}, ${weeklyHours(meetings)} hours per week`
-                : 'No classes on the weekday timetable this term.';
+                ? `${termName}: ${onGrid.length} class meeting${onGrid.length === 1 ? '' : 's'}, ${weeklyHours(meetings)} hours per week`
+                : `No classes on the weekday timetable in ${termName}.`;
         }
 
         $('#room-view-title').text(title);
@@ -245,8 +246,9 @@ const roomSchedule = (() => {
         ` : '');
     };
 
+    // A room may have no classes in the selected term; it stays selected so switching terms keeps it.
     const selectRoom = room => {
-        selectedRoom = rooms.has(room) ? room : '';
+        selectedRoom = room;
 
         $('.room-entry').removeClass('active')
             .filter((i, el) => $(el).attr('data-room') === selectedRoom).addClass('active');
@@ -336,29 +338,44 @@ const roomSchedule = (() => {
         $(window).on('popstate hashchange', readHash);
     };
 
-    const loadData = done => {
-        const cached = localStorage.getItem(`course-data-${config.term}-${config.dataVersion}`);
+    // Called by suchedule.js with the selected term's data, or with null while a term is loading.
+    const setData = (data, term) => {
+        ready = Boolean(data);
 
-        if (cached !== null) return done(JSON.parse(cached));
+        if (!data) {
+            $('#room-list').addClass('loading').empty();
+            $('#room-grid').empty();
+            $('#room-extra').hide();
+            $('#room-view-title').text('Loading…');
+            $('#room-view-meta').text('');
 
-        $.getJSON(`data-v${config.dataVersion}.min.json`, done);
+            return;
+        }
+
+        termName = term.name;
+
+        buildIndex(data.courses, data.instructors, data.places);
+        renderRoomList();
+        filterRooms($('#room-search').val() || '');
+
+        if (/^#rooms?/.test(location.hash)) {
+            readHash();
+        } else {
+            selectRoom(selectedRoom);
+        }
     };
 
     const init = () => {
         setEvents();
         readHash();
 
-        loadData(({courses, instructors, places}) => {
-            buildIndex(courses, instructors, places);
-            renderRoomList();
-            ready = true;
-            readHash();
-
-            if (!selectedRoom) renderTimetable();
-        });
+        // The term data may have arrived before this file was loaded.
+        if (!ready && typeof currentTermData !== 'undefined' && currentTermData) {
+            setData(currentTermData, termState.current);
+        }
     };
 
-    return {init};
+    return {init, setData};
 })();
 
 $(roomSchedule.init);

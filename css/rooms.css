@@ -28,13 +28,28 @@
 }
 
 @media only screen and (max-width: 500px) {
+    #logo {
+        font-size: 22px;
+    }
+
     #view-tabs {
-        margin-left: 10px;
+        margin-left: 6px;
     }
 
     .view-tab {
-        padding: 0 8px;
+        padding: 0 7px;
         font-size: 14px;
+    }
+
+    /* Not enough room for the tabs and the button labels: keep only the icons of Clear / Copy Crn */
+    #clear-button,
+    #copy-button {
+        font-size: 0;
+    }
+
+    #clear-button::before,
+    #copy-button::before {
+        font-size: 18px;
     }
 }
 

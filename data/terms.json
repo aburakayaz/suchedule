@@ -1,0 +1,25 @@
+{
+  "default": "202601",
+  "terms": [
+    {
+      "term": "202602",
+      "name": "Spring 2026-2027",
+      "hash": "d4c4a2f88b"
+    },
+    {
+      "term": "202601",
+      "name": "Fall 2026-2027",
+      "hash": "4f2abff69a"
+    },
+    {
+      "term": "202503",
+      "name": "Summer 2025-2026",
+      "hash": "8665f3a570"
+    },
+    {
+      "term": "202502",
+      "name": "Spring 2025-2026",
+      "hash": "6b31ce7b77"
+    }
+  ]
+}
